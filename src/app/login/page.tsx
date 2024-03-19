@@ -10,8 +10,8 @@ export default function Login() {
   return (
     <>
       <div className="flex">
-        <div className="flex min-h-screen w-1/2 items-center justify-center gap-4 bg-gradient-to-b from-primary-3 from-65% to-primary-5">
-          <Image className="" src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={180} height={37} />
+        <div className="flex min-h-screen w-1/2 items-center justify-center gap-4 bg-gradient-to-b from-primary from-15% via-primary-3 via-65% to-primary-5">
+          <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={180} height={37} />
           <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
         </div>
         <div className="flex w-1/2 items-center px-[10%]">
