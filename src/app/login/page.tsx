@@ -6,7 +6,7 @@ import Link from "next/link";
 // icons
 import { FiEye } from "react-icons/fi";
 
-export default function Login() {
+const Login = () => {
   return (
     <>
       <div className="flex">
@@ -31,7 +31,7 @@ export default function Login() {
                 <FiEye size={27} className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400" />
               </div>
             </div>
-            <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5">Login</button>
+            <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover">Login</button>
             <p className="mt-3 text-center text-sm">
               Don't have an account?
               <Link href="/register" className="ms-2 font-bold text-primary">
@@ -43,4 +43,6 @@ export default function Login() {
       </div>
     </>
   );
-}
+};
+
+export default Login;
