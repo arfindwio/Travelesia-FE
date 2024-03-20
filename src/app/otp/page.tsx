@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-import OtpInput from "@/components/auth/OtpInput";
+import OtpInput from "@/components/Auth/OtpInput";
 
 // icons
 import { IoArrowBack } from "react-icons/io5";
 
-export default function Otp() {
+const Otp = () => {
   return (
     <>
       <div className="flex">
@@ -33,4 +33,6 @@ export default function Otp() {
       </div>
     </>
   );
-}
+};
+
+export default Otp;
