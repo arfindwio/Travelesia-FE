@@ -7,7 +7,7 @@ const OtpInput = () => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
 
   const handleChange = (index: number, value: string) => {
-    if (isNaN(Number(value))) return; // Memastikan hanya angka yang diterima
+    if (isNaN(Number(value))) return;
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
@@ -48,7 +48,7 @@ const OtpInput = () => {
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             ref={(el) => (inputRefs.current[index] = el)}
-            className="border-1 h-10 w-10 rounded-2xl border text-center outline-primary"
+            className="h-10 w-10 rounded-2xl border text-center outline-primary"
           />
         ))}
       </div>
