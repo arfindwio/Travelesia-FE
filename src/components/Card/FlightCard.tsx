@@ -1,24 +1,31 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 // Icons
 import { GiLotus } from "react-icons/gi";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { PiSuitcaseRollingLight } from "react-icons/pi";
 
-const FlightCard = () => {
+const FlightCard: React.FC = () => {
+  const [flightDetail, setFlightDetail] = useState<boolean>(false);
   return (
     <>
-      <div className="rounded-lg border-2 border-primary-3 p-5 shadow-lg">
-        <div className="flex flex-col gap-3">
+      <div className="group rounded-lg border-2 border-primary-3 p-5 shadow-lg">
+        <div
+          className="flex cursor-pointer flex-col gap-3 pb-5"
+          onClick={() => {
+            setFlightDetail(!flightDetail);
+          }}
+        >
           <div className="flex justify-between">
             <div className="flex w-2/3 items-center gap-2">
               <GiLotus size={25} className="text-alert-yellow" />
               <p className="text-xs font-semibold">Jet Air - Economy</p>
             </div>
-            <div className="cursor-pointer rounded-full border-2 p-1">
-              <IoIosArrowDown size={20} className="font-semibold" />
+            <div className="cursor-pointer rounded-full border-2 p-1 hover:border-primary-3 group-hover:border-primary-3">
+              {flightDetail ? <IoIosArrowUp size={20} className="font-semibold" /> : <IoIosArrowDown size={20} className="font-semibold" />}
             </div>
           </div>
           <div className="flex justify-between px-5">
@@ -44,6 +51,40 @@ const FlightCard = () => {
             </div>
           </div>
         </div>
+        {flightDetail ? (
+          <div className="flex flex-col gap-2 border-t-2 border-neutral-3 px-4 py-6">
+            <div className="flex flex-col pb-2">
+              <h5 className="mb-2 text-sm font-bold text-primary">Flight Detail</h5>
+              <div className="flex items-center justify-between">
+                <h5 className="text-base font-bold text-primary">07:00</h5>
+                <p className="text-sm font-bold text-primary-3">Departure</p>
+              </div>
+              <p className="text-sm font-normal">03 Maret 2023</p>
+              <p className="text-sm font-medium">Soekarno Hatta - Terminal 1A Domestik</p>
+            </div>
+            <div className="mx-auto w-[40%] border-b-2 border-neutral-4"></div>
+            <div className="flex items-center gap-3 px-4 py-2">
+              <GiLotus size={25} className="text-alert-yellow" />
+              <div className="flex flex-col">
+                <h5 className="text-sm font-bold">Jet Air - Economy</h5>
+                <h5 className="mb-3 text-sm font-bold">JT - 203</h5>
+                <p className="text-xs font-semibold">Information :</p>
+                <p className="text-sm font-normal">Baggage 20 kg</p>
+                <p className="text-sm font-normal">Cabin baggage 7 kg</p>
+                <p className="text-sm font-normal">In Flight Entertainment</p>
+              </div>
+            </div>
+            <div className="mx-auto w-[40%] border-b-2 border-neutral-4"></div>
+            <div className="flex flex-col pt-2">
+              <div className="flex items-center justify-between">
+                <h5 className="text-base font-bold text-primary">11:00</h5>
+                <p className="text-sm font-bold text-primary-3">Arrival</p>
+              </div>
+              <p className="text-sm font-normal">03 Maret 2023</p>
+              <p className="text-sm font-medium">Melbourne International Airport</p>
+            </div>
+          </div>
+        ) : null}
       </div>
     </>
   );
