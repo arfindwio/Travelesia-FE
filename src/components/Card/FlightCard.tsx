@@ -12,13 +12,13 @@ const FlightCard: React.FC = () => {
   const [flightDetail, setFlightDetail] = useState<boolean>(false);
   return (
     <>
-      <div className="group rounded-lg border-2 border-primary-3 p-5 shadow-lg">
-        <div
-          className="flex cursor-pointer flex-col gap-3 pb-5"
-          onClick={() => {
-            setFlightDetail(!flightDetail);
-          }}
-        >
+      <div
+        className={`group cursor-pointer rounded-lg border-2 hover:border-primary-3 ${flightDetail ? "border-primary-3" : ""} p-5 shadow-lg`}
+        onClick={() => {
+          setFlightDetail(!flightDetail);
+        }}
+      >
+        <div className="flex flex-col gap-3 pb-5">
           <div className="flex justify-between">
             <div className="flex w-2/3 items-center gap-2">
               <GiLotus size={25} className="text-alert-yellow" />

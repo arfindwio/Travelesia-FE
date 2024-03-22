@@ -6,7 +6,7 @@ import UserActionButton from "./UserActionButton";
 
 const Navbar = () => {
   return (
-    <header className="fixed flex w-full items-center justify-between border-b bg-neutral-5 px-20 py-2 shadow-md">
+    <header className="fixed z-50 flex w-full items-center justify-between border-b bg-neutral-5 px-20 py-2 shadow-md">
       <div className="flex w-1/2 items-center gap-4">
         <Link href="/">
           <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={85} height={20} />
