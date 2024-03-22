@@ -12,7 +12,6 @@ const Flight = () => {
     <>
       <Navbar />
       <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-20 pb-4 pt-24 shadow-md">
-        <h1 className="text-xl font-bold">Flight Detail</h1>
         <div className="flex justify-between gap-4">
           <div className="flex w-[78%] items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5">
             <IoArrowBack size={25} />
@@ -27,7 +26,10 @@ const Flight = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4 px-40 py-10">
-        <SortFilterButton />
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold">Flight Tickets</h1>
+          <SortFilterButton />
+        </div>
         <FlightCard />
       </div>
     </>
