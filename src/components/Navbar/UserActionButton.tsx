@@ -1,5 +1,7 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Icons
 import { MdLogin } from "react-icons/md";
@@ -8,18 +10,20 @@ import { FiBell } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
 
 const UserActionButton = () => {
+  const pathname = usePathname();
+
   const user = true;
   return (
     <>
       {user ? (
         <div className="flex items-center gap-4">
-          <Link href="/" className="text-primary-3">
+          <Link href="/flight" className={`${pathname === "/flight" ? "text-primary-3" : ""}`}>
             <IoList size={25} />
           </Link>
-          <Link href="/" className="text-primary-3">
+          <Link href="/notification" className={`${pathname === "notification" ? "text-primary-3" : ""}`}>
             <FiBell size={23} />
           </Link>
-          <Link href="/" className="text-primary-3">
+          <Link href="/profile-account" className={`${pathname === "profile-account" ? "text-primary-3" : ""}`}>
             <LuUser size={25} />
           </Link>
         </div>
