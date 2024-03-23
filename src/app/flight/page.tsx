@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+// Components
 import Navbar from "@/components/Navbar";
 import DateFilterButton from "@/components/FilterButton/DateFilterButton";
 import SortFilterButton from "@/components/FilterButton/SortFilterButton";
@@ -12,6 +14,7 @@ const Flight = () => {
     <>
       <Navbar />
       <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-20 pb-4 pt-24 shadow-md">
+        <h1 className="text-xl font-bold">Flight Detail</h1>
         <div className="flex justify-between gap-4">
           <div className="flex w-[78%] items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5">
             <IoArrowBack size={25} />
