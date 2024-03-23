@@ -17,7 +17,7 @@ const UserActionButton = () => {
     <>
       {user ? (
         <div className="flex items-center gap-4">
-          <Link href="/flight" className={`${pathname === "/flight" ? "text-primary-3" : ""}`}>
+          <Link href="/history" className={`${pathname === "/history" ? "text-primary-3" : ""}`}>
             <IoList size={25} />
           </Link>
           <Link href="/notification" className={`${pathname === "notification" ? "text-primary-3" : ""}`}>

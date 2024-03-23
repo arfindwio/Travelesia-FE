@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, KeyboardEvent, MouseEvent } from "react";
+
+// Icons
 import { LuSearch } from "react-icons/lu";
 
 const InputSearch = () => {
