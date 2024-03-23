@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 
 // Icons
 import { LuArrowDownUp } from "react-icons/lu";

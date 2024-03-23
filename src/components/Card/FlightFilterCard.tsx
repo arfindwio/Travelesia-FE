@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -60,7 +58,7 @@ const FlightFilterCard = () => {
         </div>
       </div>
       <Link href="/flight">
-        <button className="w-full bg-primary py-2 text-base font-bold text-neutral-5">Search Flight</button>
+        <button className="w-full bg-primary py-2 text-base font-bold text-neutral-5 hover:bg-primary-hover">Search Flight</button>
       </Link>
     </div>
   );

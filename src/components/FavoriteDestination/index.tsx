@@ -1,3 +1,4 @@
+// Components
 import DestinationFilterButton from "./DestinationFilterButton";
 import DestinationCard from "./DestinationCard";
 

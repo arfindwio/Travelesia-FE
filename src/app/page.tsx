@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+// Components
 import Navbar from "@/components/Navbar";
 import FlightFilterCard from "@/components/Card/FlightFilterCard";
 import FavoriteDestination from "@/components/FavoriteDestination";

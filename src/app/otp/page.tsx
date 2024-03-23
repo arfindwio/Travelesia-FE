@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+// Components
 import OtpInput from "@/components/Auth/OtpInput";
 
 // icons
