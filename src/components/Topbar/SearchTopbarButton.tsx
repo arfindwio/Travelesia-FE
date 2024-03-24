@@ -3,7 +3,7 @@
 // Icons
 import { LuSearch } from "react-icons/lu";
 
-const HistorySearchButton = () => {
+const SearchTopbarButton = () => {
   return (
     <div className="group cursor-pointer rounded-full p-2 hover:bg-primary-3">
       <LuSearch size={30} className="text-primary group-hover:text-neutral-5" />
@@ -11,4 +11,4 @@ const HistorySearchButton = () => {
   );
 };
 
-export default HistorySearchButton;
+export default SearchTopbarButton;
