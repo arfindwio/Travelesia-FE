@@ -13,8 +13,8 @@ const Profile = () => {
     <>
       <Navbar />
       <Topbar />
-      <div className="px-20">
-        <div className="mt-4 flex w-full justify-between gap-6 rounded-xl border-2 border-primary-3 bg-slate-100 p-10">
+      <div className="mt-4 px-20">
+        <div className="flex w-full justify-between gap-6 rounded-xl border-2 border-primary-3 bg-slate-100 p-10">
           <div className="flex w-[40%] flex-col gap-6">
             <SidebarAccount />
           </div>
