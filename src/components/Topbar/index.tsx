@@ -16,6 +16,7 @@ const Topbar = () => {
   let topbarName = "";
   if (pathName === "/history") topbarName = "Payment History";
   if (pathName === "/account/profile") topbarName = "Account Profile";
+  if (pathName === "/notification") topbarName = "Notification";
 
   return (
     <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-20 pb-4 pt-24 shadow-md">
@@ -27,11 +28,11 @@ const Topbar = () => {
             <p className="pl-2 text-base font-bold">Homepage</p>
           </Link>
         </div>
-        {pathName === "/history" ? (
-          <div className="flex gap-2">
+        {pathName === "/history" || pathName === "/notification" ? (
+          <>
             <FilterTopbarButton />
             <SearchTopbarButton />
-          </div>
+          </>
         ) : null}
       </div>
     </div>
