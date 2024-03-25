@@ -20,7 +20,7 @@ const SidebarAccount = () => {
         <p className="text-base group-hover:font-semibold">Edit Profile</p>
       </Link>
       <Link
-        href="/account/profile"
+        href="/account/setting"
         className={`${pathName === "/account/setting" ? "border-primary-3 font-bold text-primary-3" : "group font-normal hover:border-primary-3 hover:text-primary-3"} flex gap-6 border-b-2 border-neutral-4 pb-3 `}
       >
         <TbSettings size={25} className="text-primary-3" />
