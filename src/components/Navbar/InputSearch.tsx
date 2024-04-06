@@ -24,7 +24,7 @@ const InputSearch = () => {
   return (
     <div className="relative">
       <input type="text" className="w-[140%] rounded-2xl border bg-slate-100 py-2 pl-4 pr-10 outline-none" placeholder="Search..." ref={searchRef} onKeyDown={handleSearch} />
-      <LuSearch size={25} className="absolute -right-24 top-2 cursor-pointer text-neutral-3" onClick={handleSearch} />
+      <LuSearch size={25} className="absolute -right-[86px] top-2 cursor-pointer text-neutral-3" onClick={handleSearch} />
     </div>
   );
 };

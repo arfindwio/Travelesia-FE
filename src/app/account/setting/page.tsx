@@ -1,12 +1,7 @@
-import Image from "next/image";
-
 // Components
 import Navbar from "@/components/Navbar";
 import Topbar from "@/components/Topbar";
 import SidebarAccount from "@/components/Sidebar/SidebarAccount";
-
-// Icons
-import { IoImageOutline } from "react-icons/io5";
 
 const Profile = () => {
   return (
