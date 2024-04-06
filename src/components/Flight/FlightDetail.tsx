@@ -73,7 +73,7 @@ const FlightDetail = ({ id }: { id: number }) => {
           <h1 className="text-lg font-bold text-primary">IDR 9.850.000</h1>
         </div>
       </div>
-      <button className="mx-auto mt-6 w-[95%] rounded-xl bg-alert-red py-4 font-normal text-neutral-5 hover:bg-red-600">Continue Payment</button>
+      {pathName === `/flight/${id}` ? <button className="mx-auto mt-6 w-[95%] rounded-xl bg-alert-red py-4 font-normal text-neutral-5 hover:bg-red-600">Continue Payment</button> : null}
     </>
   );
 };
