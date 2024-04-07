@@ -107,7 +107,7 @@ const SortFilterButton: React.FC = () => {
             </div>
           </div>
           <div onClick={() => handleFilter("latest arrival")} className={`${filter === "latest arrival" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer hover:bg-primary hover:text-neutral-5`}>
-            <div className="justify-betwee mx-3 flex w-full items-center">
+            <div className="mx-3 flex w-full items-center justify-between border-b-2 py-2">
               <p className="text-sm">
                 <span className="font-bold">Arrival </span>- Latest
               </p>
