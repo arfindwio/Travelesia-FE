@@ -18,15 +18,15 @@ const Profile = () => {
               <h4 className="mb-3 text-center text-2xl font-bold">Change Password</h4>
               <div className="flex flex-col">
                 <label htmlFor="oldPassword">Enter Old Password</label>
-                <input type="password" id="oldPassword" value="budi@gmail.com" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="password" id="oldPassword" value="" placeholder="***********" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="newPassword">Enter New Password</label>
-                <input type="password" id="newPassword" value="budi@gmail.com" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="password" id="newPassword" value="" placeholder="***********" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="confirmNewPassword">Confirm New Password</label>
-                <input type="password" id="confirmNewPassword" value="budi@gmail.com" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="password" id="confirmNewPassword" value="" placeholder="***********" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
               </div>
               <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover">Change Password</button>
             </div>
