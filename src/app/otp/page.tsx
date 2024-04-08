@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 // Components
 import OtpInput from "@/components/Auth/OtpInput";
@@ -7,6 +10,19 @@ import OtpInput from "@/components/Auth/OtpInput";
 import { IoArrowBack } from "react-icons/io5";
 
 const Otp = () => {
+  const [valueEmail, setValueEmail] = useState<null | string>(null);
+
+  if (typeof window !== "undefined") {
+    const storedValue = localStorage.getItem("email");
+
+    if (storedValue) {
+      if (!valueEmail) {
+        setValueEmail(storedValue);
+      }
+      localStorage.removeItem("email");
+    }
+  }
+
   return (
     <>
       <div className="flex">
