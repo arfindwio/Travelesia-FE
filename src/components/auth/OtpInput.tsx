@@ -1,10 +1,20 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const OtpInput = () => {
+interface OtpInputProps {
+  onOtpChange: (finalOtp: string) => void;
+}
+
+const OtpInput: React.FC<OtpInputProps> = ({ onOtpChange }) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
+
+  const finalOtp = otp.join("");
+
+  useEffect(() => {
+    onOtpChange(finalOtp);
+  }, [onOtpChange, finalOtp]);
 
   const handleChange = (index: number, value: string) => {
     if (isNaN(Number(value))) return;

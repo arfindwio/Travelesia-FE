@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-// api
+// Api
 import { postRegisterUser } from "@/api/users-endpoints";
 
 // Helper
@@ -144,9 +144,8 @@ const Register = () => {
 
     toast.dismiss(loadingToastId);
 
-    if (!register) {
-      showErrorToast("Registration Failed");
-    }
+    if (!register) showErrorToast("Registration Failed");
+
     if (register) {
       showSuccessToast("Verification link has been sent!");
       setTimeout(() => {

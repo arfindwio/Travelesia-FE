@@ -1,7 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+// Api
+import { putVerifyOtpUser, putResendOtpUser } from "@/api/users-endpoints";
+
+// Helper
+import { showSuccessToast, showLoadingToast, showErrorToast } from "@/helper/toast-helper";
 
 // Components
 import OtpInput from "@/components/Auth/OtpInput";
@@ -9,8 +17,12 @@ import OtpInput from "@/components/Auth/OtpInput";
 // icons
 import { IoArrowBack } from "react-icons/io5";
 
-const Otp = () => {
+const Otp: React.FC = () => {
+  const router = useRouter();
+
   const [valueEmail, setValueEmail] = useState<null | string>(null);
+  const [finalOtp, setFinalOtp] = useState<string>("");
+  const [countdown, setCountdown] = useState(60);
 
   if (typeof window !== "undefined") {
     const storedValue = localStorage.getItem("email");
@@ -20,8 +32,62 @@ const Otp = () => {
         setValueEmail(storedValue);
       }
       localStorage.removeItem("email");
+    } else if (!valueEmail) {
+      router.back();
     }
   }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prevCountdown) => Math.max(prevCountdown - 1, 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const maskEmail = (email: string): string => {
+    const prefix: string = email.substring(0, email.indexOf("@"));
+    const maskedPrefix: string = prefix.length > 1 ? prefix.charAt(0) + "*".repeat(prefix.length - 1) : prefix;
+    const maskedEmail: string = maskedPrefix + email.substring(email.indexOf("@"));
+
+    return maskedEmail;
+  };
+
+  const handleVerifyOtp = async () => {
+    const loadingToastId = showLoadingToast("Loading...");
+    let verifyOtp: boolean = false;
+
+    if (valueEmail && finalOtp) verifyOtp = await putVerifyOtpUser({ email: valueEmail, otp: finalOtp });
+
+    toast.dismiss(loadingToastId);
+
+    if (!verifyOtp) showErrorToast("Verify OTP Failed");
+    if (verifyOtp) {
+      showSuccessToast("verify OTP successful");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    const loadingToastId = showLoadingToast("Loading...");
+    let resendOtp: boolean = false;
+
+    if (valueEmail) resendOtp = await putResendOtpUser({ email: valueEmail });
+
+    toast.dismiss(loadingToastId);
+
+    if (!resendOtp) showErrorToast("Resend OTP Failed");
+    if (resendOtp) {
+      showSuccessToast("Resend OTP successful");
+      setCountdown(60);
+    }
+  };
+
+  const handleOtpChange = (otp: string) => {
+    setFinalOtp(otp);
+  };
 
   return (
     <>
@@ -31,7 +97,7 @@ const Otp = () => {
           <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
         </div>
         <div className="flex w-1/2 items-center px-[10%]">
-          <form className="flex w-full flex-col gap-2">
+          <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleVerifyOtp() : "")}>
             <div className="relative flex items-center">
               <IoArrowBack size={25} className="left-0 top-2" />
               <p className="ms-2 text-lg">Back</p>
@@ -39,13 +105,31 @@ const Otp = () => {
             <h1 className="mb-4 text-2xl font-bold">Input OTP</h1>
             <div className="flex flex-col gap-4 text-center">
               <p className="text-sm">
-                Type the 6 digit code sent to <span className="font-bold">b*****@gmail.com</span>
+                Type the 6 digit code sent to <span className="font-bold">{valueEmail ? maskEmail(valueEmail) : ""}</span>
               </p>
-              <OtpInput />
-              <p className="text-sm">Resend OTP in 60 seconds</p>
+              <OtpInput onOtpChange={handleOtpChange} />
+              {countdown > 0 ? (
+                <p className="text-sm">Resend OTP in {countdown} seconds</p>
+              ) : (
+                <button
+                  className="mx-auto w-fit text-base font-semibold text-primary-3"
+                  onClick={() => {
+                    handleResendOtp();
+                  }}
+                >
+                  Resend OTP
+                </button>
+              )}
             </div>
-            <button className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover">Send</button>
-          </form>
+            <button
+              className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover"
+              onClick={() => {
+                handleVerifyOtp();
+              }}
+            >
+              Send
+            </button>
+          </div>
         </div>
       </div>
     </>
