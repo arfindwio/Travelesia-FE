@@ -90,49 +90,47 @@ const Otp: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="flex">
-        <div className="flex min-h-screen w-1/2 items-center justify-center gap-4 bg-gradient-to-b from-primary from-15% via-primary-3 via-65% to-primary-5">
-          <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={180} height={37} />
-          <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
-        </div>
-        <div className="flex w-1/2 items-center px-[10%]">
-          <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleVerifyOtp() : "")}>
-            <div className="relative flex items-center">
-              <IoArrowBack size={25} className="left-0 top-2" />
-              <p className="ms-2 text-lg">Back</p>
-            </div>
-            <h1 className="mb-4 text-2xl font-bold">Input OTP</h1>
-            <div className="flex flex-col gap-4 text-center">
-              <p className="text-sm">
-                Type the 6 digit code sent to <span className="font-bold">{valueEmail ? maskEmail(valueEmail) : ""}</span>
-              </p>
-              <OtpInput onOtpChange={handleOtpChange} />
-              {countdown > 0 ? (
-                <p className="text-sm">Resend OTP in {countdown} seconds</p>
-              ) : (
-                <button
-                  className="mx-auto w-fit text-base font-semibold text-primary-3"
-                  onClick={() => {
-                    handleResendOtp();
-                  }}
-                >
-                  Resend OTP
-                </button>
-              )}
-            </div>
-            <button
-              className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover"
-              onClick={() => {
-                handleVerifyOtp();
-              }}
-            >
-              Send
-            </button>
+    <div className="flex">
+      <div className="flex min-h-screen w-1/2 items-center justify-center gap-4 bg-gradient-to-b from-primary from-15% via-primary-3 via-65% to-primary-5">
+        <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={180} height={37} />
+        <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
+      </div>
+      <div className="flex w-1/2 items-center px-[10%]">
+        <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleVerifyOtp() : "")}>
+          <button className="relative flex w-fit items-center" onClick={() => router.back()}>
+            <IoArrowBack size={25} className="left-0 top-2" />
+            <p className="ms-2 text-lg">Back</p>
+          </button>
+          <h1 className="mb-4 text-2xl font-bold">Input OTP</h1>
+          <div className="flex flex-col gap-4 text-center">
+            <p className="text-sm">
+              Type the 6 digit code sent to <span className="font-bold">{valueEmail ? maskEmail(valueEmail) : ""}</span>
+            </p>
+            <OtpInput onOtpChange={handleOtpChange} />
+            {countdown > 0 ? (
+              <p className="text-sm">Resend OTP in {countdown} seconds</p>
+            ) : (
+              <button
+                className="mx-auto w-fit text-base font-semibold text-primary-3"
+                onClick={() => {
+                  handleResendOtp();
+                }}
+              >
+                Resend OTP
+              </button>
+            )}
           </div>
+          <button
+            className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover"
+            onClick={() => {
+              handleVerifyOtp();
+            }}
+          >
+            Send
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
