@@ -127,6 +127,12 @@ const Login = () => {
                 Register here
               </Link>
             </p>
+            <p className="mt-3 text-center text-sm">
+              Account not verified?
+              <Link href="/verify-account" className="ms-2 font-bold text-primary">
+                Verify it here
+              </Link>
+            </p>
           </div>
         </div>
       </div>
