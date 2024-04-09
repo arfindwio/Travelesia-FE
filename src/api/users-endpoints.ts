@@ -18,6 +18,9 @@ interface VerifyOtpInput {
 interface ResendOtpInput {
   email: string;
 }
+interface ForgetPasswordInput {
+  email: string;
+}
 
 export const postRegisterUser = async (input: RegisterInput): Promise<boolean> => {
   try {
@@ -98,6 +101,54 @@ export const putResendOtpUser = async (input: ResendOtpInput): Promise<boolean> 
         "Content-Type": "application/json",
       },
       body: JSON.stringify(input),
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const errorMessage = await response.json();
+      showErrorToast(errorMessage.message);
+      return false;
+    }
+  } catch (error) {
+    showErrorToast("An unexpected error occurred");
+    return false;
+  }
+};
+
+export const postForgetPasswordUser = async (input: ForgetPasswordInput): Promise<boolean> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.USERS}/forget-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const errorMessage = await response.json();
+      showErrorToast(errorMessage.message);
+      return false;
+    }
+  } catch (error) {
+    showErrorToast("An unexpected error occurred");
+    return false;
+  }
+};
+
+export const getAuthenticateUser = async (): Promise<boolean> => {
+  try {
+    const token = localStorage.getItem("tokenUser");
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.USERS}/authenticate`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.ok) {

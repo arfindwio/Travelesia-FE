@@ -92,6 +92,7 @@ const Login = () => {
                   onChange={(e) => {
                     handleInputChange(e, "password");
                   }}
+                  autoComplete="off"
                 />
                 {showPassword ? (
                   <FiEye
