@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+// Api
+import { getAuthenticateUser } from "@/api/users-endpoints";
 
 // Icons
 import { MdLogin } from "react-icons/md";
@@ -12,10 +16,32 @@ import { LuUser } from "react-icons/lu";
 const UserActionButton = () => {
   const pathname = usePathname();
 
-  const user = true;
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const tokenFromLocalStorage = localStorage.getItem("tokenUser");
+    if (tokenFromLocalStorage) {
+      setToken(tokenFromLocalStorage);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (token) {
+        const user = await getAuthenticateUser();
+        if (!user) {
+          localStorage.removeItem("tokenUser");
+          setToken(null);
+        }
+      }
+    };
+
+    fetchData();
+  }, [token]);
+
   return (
     <>
-      {user ? (
+      {token ? (
         <div className="flex items-center gap-6">
           <Link href="/history" className={`${pathname === "/history" ? "text-primary-3" : ""}`}>
             <IoList size={25} />
@@ -28,10 +54,10 @@ const UserActionButton = () => {
           </Link>
         </div>
       ) : (
-        <div className="relative flex rounded-xl bg-primary px-6 py-3 text-neutral-5">
+        <Link href="/login" className="relative flex rounded-xl bg-primary px-6 py-3 text-neutral-5 hover:bg-primary-hover">
           <MdLogin size={20} className="absolute left-4" />
           <p className="pl-5 text-sm">Login</p>
-        </div>
+        </Link>
       )}
     </>
   );

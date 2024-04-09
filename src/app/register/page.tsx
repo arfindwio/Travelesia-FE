@@ -211,6 +211,7 @@ const Register = () => {
                   placeholder="Masukkan password"
                   value={inputRegister.password}
                   onChange={(e) => handleInputChange(e, "password")}
+                  autoComplete="off"
                 />
                 {showPassword ? (
                   <FiEye
