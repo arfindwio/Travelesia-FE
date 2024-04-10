@@ -21,6 +21,11 @@ interface ResendOtpInput {
 interface ForgetPasswordInput {
   email: string;
 }
+interface UpdatePasswordInput {
+  token: string;
+  password: string;
+  passwordConfirmation: string;
+}
 
 export const postRegisterUser = async (input: RegisterInput): Promise<boolean> => {
   try {
@@ -124,6 +129,29 @@ export const postForgetPasswordUser = async (input: ForgetPasswordInput): Promis
         "Content-Type": "application/json",
       },
       body: JSON.stringify(input),
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const errorMessage = await response.json();
+      showErrorToast(errorMessage.message);
+      return false;
+    }
+  } catch (error) {
+    showErrorToast("An unexpected error occurred");
+    return false;
+  }
+};
+
+export const putUpdatePasswordUser = async (input: UpdatePasswordInput): Promise<boolean> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.USERS}/update-password?token=${input.token}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password: input.password, passwordConfirmation: input.passwordConfirmation }),
     });
 
     if (response.ok) {
