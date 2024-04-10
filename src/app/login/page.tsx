@@ -80,13 +80,15 @@ const Login = () => {
             <div className="flex w-full flex-col">
               <div className="flex justify-between">
                 <label htmlFor="password">Password</label>
-                <p className="text-primary">Forget Password</p>
+                <button className="text-primary" onClick={() => router.push("/forget-password")}>
+                  Forget Password
+                </button>
               </div>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  className="border-1 w-full rounded-2xl border px-4 py-3 outline-none"
+                  className="border-1 w-full rounded-2xl border px-4 py-3 pr-14 outline-none"
                   placeholder="Masukkan password"
                   value={inputLogin.password}
                   onChange={(e) => {
@@ -121,18 +123,20 @@ const Login = () => {
             >
               Login
             </button>
-            <p className="mt-3 text-center text-sm">
-              Don't have an account?
-              <Link href="/register" className="ms-2 font-bold text-primary">
-                Register here
-              </Link>
-            </p>
-            <p className="mt-3 text-center text-sm">
-              Account not verified?
-              <Link href="/verify-account" className="ms-2 font-bold text-primary">
-                Verify it here
-              </Link>
-            </p>
+            <div className="mt-1">
+              <p className="text-center text-sm">
+                Don't have an account?
+                <Link href="/register" className="ms-2 font-bold text-primary">
+                  Register here
+                </Link>
+              </p>
+              <p className="text-center text-sm">
+                Account not verified?
+                <Link href="/verify-account" className="ms-2 font-bold text-primary">
+                  Verify it here
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

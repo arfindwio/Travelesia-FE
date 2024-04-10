@@ -131,7 +131,7 @@ const UpdatePassword = () => {
                 <input
                   type={showPassword1 ? "text" : "password"}
                   id="password"
-                  className={`${validateUpdatePassword.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                  className={`${validateUpdatePassword.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 pr-14 outline-none`}
                   placeholder="********"
                   value={inputUpdatePassword.password}
                   onChange={(e) => handleInputChange(e, "password")}

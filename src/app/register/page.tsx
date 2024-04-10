@@ -207,7 +207,7 @@ const Register = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  className={`${validateRegister.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                  className={`${validateRegister.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 pr-14 outline-none`}
                   placeholder="Masukkan password"
                   value={inputRegister.password}
                   onChange={(e) => handleInputChange(e, "password")}
@@ -241,7 +241,7 @@ const Register = () => {
             >
               Register
             </button>
-            <p className="mt-3 text-center text-sm">
+            <p className="mt-1 text-center text-sm">
               have an account?
               <Link href="/login" className="ms-2 font-bold text-primary">
                 Login here

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 // Components
@@ -13,7 +15,7 @@ const Profile = () => {
     <>
       <Navbar />
       <Topbar />
-      <div className="mt-4 px-20">
+      <div className="mb-8 mt-4 px-20">
         <div className="flex w-full justify-between gap-6 rounded-xl border-2 border-primary-3 bg-slate-100 p-10">
           <div className="flex w-[40%] flex-col gap-6">
             <SidebarAccount />
@@ -23,14 +25,14 @@ const Profile = () => {
               <div className="mx-auto w-fit">
                 <label htmlFor="image" className="relative w-fit cursor-pointer">
                   <Image
-                    // loader={() => src}
-                    src="/ImageProfile.jpg"
+                    loader={() => "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"}
+                    src="https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"
                     alt="image profile"
-                    width={120}
-                    height={120}
-                    className="h-full w-full overflow-hidden rounded-full border-4 border-primary-3 object-fill"
+                    width={1}
+                    height={1}
+                    className="mx-auto h-[45%] w-[45%] overflow-hidden rounded-full border-4 border-primary-3 object-fill"
                   />
-                  <div className="absolute bottom-1 right-0 rounded-full bg-neutral-5 p-1 text-primary-3">
+                  <div className="absolute bottom-1 right-[84px] rounded-full bg-neutral-5 p-1 text-primary-3">
                     <IoImageOutline size={35} />
                   </div>
                 </label>
