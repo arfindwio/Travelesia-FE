@@ -116,7 +116,7 @@ const Register = () => {
       if (!passwordValidator.test(value)) {
         setValidateRegister((prevValidateRegister) => ({
           ...prevValidateRegister,
-          password: "Invalid phone number format. It must contain only numeric characters",
+          password: "Invalid password format. It must contain at least 1 lowercase, 1 uppercase, 1 digit number, 1 symbol, and be between 8 and 12 characters long",
         }));
       } else {
         setValidateRegister((prevValidateRegister) => ({
