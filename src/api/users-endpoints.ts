@@ -26,6 +26,11 @@ interface UpdatePasswordInput {
   password: string;
   passwordConfirmation: string;
 }
+interface ChangePasswordInput {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
+}
 
 export const postRegisterUser = async (input: RegisterInput): Promise<boolean> => {
   try {
@@ -177,6 +182,32 @@ export const getAuthenticateUser = async (): Promise<boolean> => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const errorMessage = await response.json();
+      showErrorToast(errorMessage.message);
+      return false;
+    }
+  } catch (error) {
+    showErrorToast("An unexpected error occurred");
+    return false;
+  }
+};
+
+export const putChangePasswordUser = async (input: ChangePasswordInput): Promise<boolean> => {
+  try {
+    const token = localStorage.getItem("tokenUser");
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.USERS}/change-password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(input),
     });
 
     if (response.ok) {
