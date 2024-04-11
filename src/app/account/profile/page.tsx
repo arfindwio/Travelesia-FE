@@ -1,6 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+
+// Api
+import { getAuthenticateUser } from "@/api/users-endpoints";
+import { putUserProfileUser } from "@/api/userProfiles-endpoints";
+
+// Helper
+import { showErrorToast, showLoadingToast, showSuccessToast } from "@/helper/toast-helper";
 
 // Components
 import Navbar from "@/components/Navbar";
@@ -10,7 +20,88 @@ import SidebarAccount from "@/components/Sidebar/SidebarAccount";
 // Icons
 import { IoImageOutline } from "react-icons/io5";
 
+interface InputUserProfile {
+  image: File | null;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+  country: string;
+}
+
 const Profile = () => {
+  const router = useRouter();
+
+  const [dataImage, setDataImage] = useState<string>("");
+  const [inputUserProfile, setInputUserProfile] = useState<InputUserProfile>({
+    image: null,
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    city: "",
+    country: "",
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("tokenUser");
+
+    if (!token) return router.push("/");
+  }, [router]);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const user = await getAuthenticateUser();
+      if (user && user.userProfile) {
+        setDataImage(user.userProfile.profilePicture || "");
+        setInputUserProfile({
+          image: null,
+          fullName: user.userProfile.fullName,
+          phoneNumber: user.userProfile.phoneNumber,
+          email: user.email,
+          city: user.userProfile.city || "",
+          country: user.userProfile.country || "",
+        });
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    if (field === "image") {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        const file = files[0];
+        const imageUrl = URL.createObjectURL(file);
+
+        setDataImage(imageUrl);
+        setInputUserProfile((prevInputUserProfile) => ({
+          ...prevInputUserProfile,
+          image: file,
+        }));
+      }
+    } else {
+      const value = e.target.value;
+      setInputUserProfile((prevInputUserProfile) => ({
+        ...prevInputUserProfile,
+        [field]: value,
+      }));
+    }
+  };
+
+  const handleUserProfile = async () => {
+    if (!inputUserProfile.fullName || !inputUserProfile.phoneNumber || !inputUserProfile.email) return showErrorToast("Please fill in all required fields: Full Name, Phone Number, and Email");
+    const loadingToastId = showLoadingToast("Loading...");
+
+    const userProfile = await putUserProfileUser(inputUserProfile);
+
+    toast.dismiss(loadingToastId);
+
+    if (!userProfile) showErrorToast("User profile failed to update");
+
+    if (userProfile) showSuccessToast("User profile successfully updated");
+  };
+
   return (
     <>
       <Navbar />
@@ -21,44 +112,53 @@ const Profile = () => {
             <SidebarAccount />
           </div>
           <div className="w-[55%]">
-            <div className="mx-auto flex w-[70%] flex-col gap-5">
+            <div className="mx-auto flex w-[70%] flex-col gap-5" onKeyDown={(e) => (e.key === "Enter" ? handleUserProfile() : "")}>
               <div className="mx-auto w-fit">
                 <label htmlFor="image" className="relative w-fit cursor-pointer">
                   <Image
-                    loader={() => "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"}
-                    src="https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"
+                    loader={() => (dataImage ? dataImage : "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316")}
+                    src={dataImage ? dataImage : "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"}
                     alt="image profile"
                     width={1}
                     height={1}
-                    className="mx-auto h-[45%] w-[45%] overflow-hidden rounded-full border-4 border-primary-3 object-fill"
+                    className="mx-auto h-36 w-36 overflow-hidden rounded-full border-4 border-primary-3 object-cover"
                   />
-                  <div className="absolute bottom-1 right-[84px] rounded-full bg-neutral-5 p-1 text-primary-3">
+                  <div className="absolute bottom-1 right-0 rounded-full bg-neutral-5 p-1 text-primary-3">
                     <IoImageOutline size={35} />
                   </div>
                 </label>
-                <input type="file" accept="image/*" id="image" hidden />
+                <input type="file" accept="image/*" id="image" hidden onChange={(e) => handleInputChange(e, "image")} />
               </div>
               <div className="flex w-full flex-col">
                 <label htmlFor="name">Full Name</label>
-                <input type="text" id="name" value="Budi Cahyono" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="text" id="name" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" placeholder="Budi Cahyono" value={inputUserProfile.fullName} onChange={(e) => handleInputChange(e, "fullName")} />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="phoneNumber">Phone Number</label>
-                <input type="text" id="phoneNumber" value="+62 8123456789" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3"
+                  placeholder="08123456789"
+                  value={inputUserProfile.phoneNumber}
+                  onChange={(e) => handleInputChange(e, "phoneNumber")}
+                />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" value="budi@gmail.com" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="email" id="email" className="rounded-2xl border-2 px-4 py-2 text-neutral-3 outline-none focus:border-primary-3" value={inputUserProfile.email} disabled />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="city">City</label>
-                <input type="text" id="city" value="Jakarta" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="text" id="city" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" value={inputUserProfile.city} onChange={(e) => handleInputChange(e, "city")} />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="country">Country</label>
-                <input type="text" id="country" value="Indonesia" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" />
+                <input type="text" id="country" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" value={inputUserProfile.country} onChange={(e) => handleInputChange(e, "country")} />
               </div>
-              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover">Save</button>
+              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={() => handleUserProfile()}>
+                Save
+              </button>
             </div>
           </div>
         </div>

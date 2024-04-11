@@ -62,7 +62,7 @@ const Login = () => {
           <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
         </div>
         <div className="flex w-1/2 items-center px-[10%]">
-          <div className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleLogin() : "")}>
+          <form className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleLogin() : "")}>
             <h5 className="mb-2 text-2xl font-semibold">Login</h5>
             <div className="flex w-full flex-col">
               <label htmlFor="emailOrPhoneNumber">Email / Phone Number</label>
@@ -137,7 +137,7 @@ const Login = () => {
                 </Link>
               </p>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </>

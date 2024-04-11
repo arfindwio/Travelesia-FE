@@ -32,6 +32,19 @@ interface ChangePasswordInput {
   newPasswordConfirmation: string;
 }
 
+interface UserProfile {
+  profilePicture: string | null;
+  fullName: string;
+  phoneNumber: string;
+  city: string | null;
+  country: string | null;
+}
+
+interface User {
+  email: string;
+  userProfile: UserProfile;
+}
+
 export const postRegisterUser = async (input: RegisterInput): Promise<boolean> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.USERS}/register`, {
@@ -172,7 +185,7 @@ export const putUpdatePasswordUser = async (input: UpdatePasswordInput): Promise
   }
 };
 
-export const getAuthenticateUser = async (): Promise<boolean> => {
+export const getAuthenticateUser = async (): Promise<User | false> => {
   try {
     const token = localStorage.getItem("tokenUser");
 
@@ -185,7 +198,8 @@ export const getAuthenticateUser = async (): Promise<boolean> => {
     });
 
     if (response.ok) {
-      return true;
+      const user = await response.json();
+      return user.data.user;
     } else {
       const errorMessage = await response.json();
       showErrorToast(errorMessage.message);

@@ -48,7 +48,7 @@ const Setting = () => {
   useEffect(() => {
     const token = localStorage.getItem("tokenUser");
 
-    if (!token) router.push("/");
+    if (!token) return router.push("/");
   }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
