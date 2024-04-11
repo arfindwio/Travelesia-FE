@@ -9,7 +9,7 @@ interface UserProfileInput {
   country: string;
 }
 
-export const putUserProfileUser = async (input: UserProfileInput): Promise<boolean> => {
+export const putUpdateUserProfile = async (input: UserProfileInput): Promise<boolean> => {
   try {
     const token = localStorage.getItem("tokenUser");
     const formData = new FormData();
