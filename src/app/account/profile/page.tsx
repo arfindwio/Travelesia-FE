@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 // Api
 import { getAuthenticateUser } from "@/api/users-endpoints";
-import { putUserProfileUser } from "@/api/userProfiles-endpoints";
+import { putUpdateUserProfile } from "@/api/userProfiles-endpoints";
 
 // Helper
 import { showErrorToast, showLoadingToast, showSuccessToast } from "@/helper/toast-helper";
@@ -93,7 +93,7 @@ const Profile = () => {
     if (!inputUserProfile.fullName || !inputUserProfile.phoneNumber || !inputUserProfile.email) return showErrorToast("Please fill in all required fields: Full Name, Phone Number, and Email");
     const loadingToastId = showLoadingToast("Loading...");
 
-    const userProfile = await putUserProfileUser(inputUserProfile);
+    const userProfile = await putUpdateUserProfile(inputUserProfile);
 
     toast.dismiss(loadingToastId);
 
@@ -116,11 +116,10 @@ const Profile = () => {
               <div className="mx-auto w-fit">
                 <label htmlFor="image" className="relative w-fit cursor-pointer">
                   <Image
-                    loader={() => (dataImage ? dataImage : "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316")}
                     src={dataImage ? dataImage : "https://ik.imagekit.io/arfin07/images.png?updatedAt=1706817534316"}
                     alt="image profile"
-                    width={1}
-                    height={1}
+                    width={500}
+                    height={500}
                     className="mx-auto h-36 w-36 overflow-hidden rounded-full border-4 border-primary-3 object-cover"
                   />
                   <div className="absolute bottom-1 right-0 rounded-full bg-neutral-5 p-1 text-primary-3">
