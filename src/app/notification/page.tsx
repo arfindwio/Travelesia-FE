@@ -27,15 +27,15 @@ const Notification = () => {
               <p className="text-base">Get 50% Off Tickets!</p>
             </div>
           </div>
-          <div className="flex h-fit w-full cursor-pointer gap-3 px-10 py-6">
+          <div className="group flex h-fit w-full cursor-pointer gap-3 px-10 py-6 hover:bg-primary-5 hover:bg-opacity-100">
             <div className="h-fit w-fit rounded-full bg-primary-4 p-1">
               <IoMdNotifications size={20} className="text-neutral-5" />
             </div>
             <div className="flex w-full flex-col gap-1">
               <div className="flex w-full items-center justify-between">
-                <p className="text-sm font-medium text-neutral-4">Notification</p>
+                <p className="text-sm font-medium text-neutral-4 group-hover:text-neutral-5">Notification</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-neutral-4">5 Maret, 14:04</p>
+                  <p className="text-sm font-medium text-neutral-4 group-hover:text-neutral-5">5 Maret, 14:04</p>
                   <div className="h-2 w-2 rounded-full bg-alert-red"></div>
                 </div>
               </div>
