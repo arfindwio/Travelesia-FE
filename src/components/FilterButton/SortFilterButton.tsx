@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Menu from "@mui/material/Menu";
 
 // Icons
 import { LuArrowDownUp } from "react-icons/lu";
 import { FaCheck } from "react-icons/fa6";
 
-const SortFilterButton: React.FC = () => {
-  const [filter, setFilter] = useState<string | null>(null);
+interface FilterInputProp {
+  onFilterChange: (filter: string) => void;
+}
+
+const SortFilterButton: React.FC<FilterInputProp> = ({ onFilterChange }) => {
+  const [filter, setFilter] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -19,6 +23,7 @@ const SortFilterButton: React.FC = () => {
   const handleFilter = (filter: string) => {
     setAnchorEl(null);
     setFilter(filter);
+    onFilterChange(filter);
   };
 
   return (
@@ -32,7 +37,7 @@ const SortFilterButton: React.FC = () => {
         onClick={handleClick}
       >
         <LuArrowDownUp size={20} className="text-primary-3 group-hover:text-neutral-5" />
-        <p className="text-sm font-semibold text-primary-3 group-hover:text-neutral-5">Sort</p>
+        <p className="text-sm font-semibold text-primary-3 group-hover:text-neutral-5">{filter ? filter : "Sort"}</p>
       </button>
       <Menu
         id="basic-menu"
