@@ -42,11 +42,11 @@ const Profile = () => {
     country: "",
   });
 
-  useEffect(() => {
+  if (typeof window !== "undefined") {
     const token = localStorage.getItem("tokenUser");
 
-    if (!token) return router.push("/");
-  }, [router]);
+    if (!token) router.push("/");
+  }
 
   useEffect(() => {
     const fetchProfileData = async () => {
