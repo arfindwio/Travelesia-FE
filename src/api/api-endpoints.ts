@@ -9,5 +9,5 @@ export const API_ENDPOINT = {
   FLIGHTS: "flights",
   SEATS: "seats",
   BOOKINGS: "bookings",
-  Passengers: "passengers",
+  PASSENGERS: "passengers",
 };

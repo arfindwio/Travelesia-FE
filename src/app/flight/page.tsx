@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Api
 import { getFlights, getFlightsQuery } from "@/api/flights-endpoints";
@@ -144,15 +145,31 @@ const Flight = () => {
     }
   }, [departure, arrival, date, seatClass]);
 
-  const handleFilterChange = (filter: string) => {
-    if (formatQuery) {
-      router.push(`/flight?${formatQuery}&w=${filter}`);
+  const handleFilterChange = (filterValue: string) => {
+    if (filter) {
+      const searchParams = new URLSearchParams(formatQuery);
+      searchParams.set("w", filterValue);
+      const newSearchParamsString = searchParams.toString();
+      router.push(`/flight?${newSearchParamsString}`);
+    } else if (formatQuery) {
+      router.push(`/flight?${formatQuery}&w=${filterValue}`);
     } else {
-      router.push(`/flight?w=${filter}`);
+      router.push(`/flight?w=${filterValue}`);
     }
   };
 
-  console.log(formatQuery);
+  const handleFilterDateChange = (filterDate: string) => {
+    if (date) {
+      filterDate = encodeURIComponent(filterDate);
+      const newFormatQuery = formatQuery.replace(/f=([^&]*)/, `f=${filterDate}`);
+      router.push(`/flight?${newFormatQuery}`);
+    } else if (formatQuery) {
+      router.push(`/flight?${formatQuery}&f=${encodeURIComponent(filterDate)}`);
+    } else {
+      router.push(`/flight?f=${encodeURIComponent(filterDate)}`);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -168,7 +185,7 @@ const Flight = () => {
           </Link>
         </div>
         <div className="flex">
-          <DateFilterButton />
+          <DateFilterButton onFilterDateChange={handleFilterDateChange} />
         </div>
       </div>
       <div className="flex flex-col gap-4 px-40 py-10">
@@ -176,7 +193,17 @@ const Flight = () => {
           <h1 className="text-xl font-bold">Flight Tickets</h1>
           <SortFilterButton onFilterChange={handleFilterChange} />
         </div>
-        {flights && flights.map((flight) => <FlightCard key={flight.id} flight={flight} />)}
+        {flights?.length ? (
+          flights.map((flight) => <FlightCard key={flight.id} flight={flight} />)
+        ) : (
+          <div className="flex w-full flex-col items-center justify-center gap-4 py-6">
+            <Image src="/flightNotFound.svg" alt="Flight Not Found" width={1} height={1} className="w-[25%]" />
+            <div className="flex w-full flex-col text-center">
+              <p className="text-sm font-medium text-neutral-1">Sorry, Tickets Sold Out!</p>
+              <p className="text-sm font-medium text-primary">Try finding another journey!</p>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

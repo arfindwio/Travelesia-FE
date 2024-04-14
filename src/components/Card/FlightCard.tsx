@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Icons
 import { GiLotus } from "react-icons/gi";
@@ -50,6 +51,8 @@ interface FlightData {
 }
 
 const FlightCard = ({ flight }: { flight: FlightData }) => {
+  const router = useRouter();
+
   const [flightDetail, setFlightDetail] = useState<boolean>(false);
 
   const formatDuration = (minutes: number) => {
@@ -96,7 +99,9 @@ const FlightCard = ({ flight }: { flight: FlightData }) => {
           </div>
           <div className="flex w-1/3 flex-col gap-2 ">
             <h5 className="ml-auto w-fit text-base font-bold text-primary">IDR {flight.price.toLocaleString("id-ID")}</h5>
-            <button className="ml-auto w-fit rounded-xl bg-primary px-6 py-2 text-base text-neutral-5 hover:bg-primary-hover">Choose</button>
+            <button className="ml-auto w-fit rounded-xl bg-primary px-6 py-2 text-base text-neutral-5 hover:bg-primary-hover" onClick={() => router.push(`/flight/${flight.id}`)}>
+              Choose
+            </button>
           </div>
         </div>
       </div>
