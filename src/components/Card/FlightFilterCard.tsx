@@ -9,7 +9,7 @@ import Menu from "@mui/material/Menu";
 
 // Icons
 import { MdFlightTakeoff, MdOutlineDateRange, MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaChild, FaChildDress, FaBaby } from "react-icons/fa6";
 
 interface PassengersInput {
   adult: number;
@@ -33,8 +33,10 @@ const FlightFilterCard = () => {
     passengers: { adult: 1, child: 0, baby: 0 },
     class: "Economy",
   });
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl1, setAnchorEl1] = useState<HTMLElement | null>(null);
+  const open1 = Boolean(anchorEl1);
+  const [anchorEl2, setAnchorEl2] = useState<HTMLElement | null>(null);
+  const open2 = Boolean(anchorEl2);
 
   useEffect(() => {
     const passengersJSON = localStorage.getItem("passengers");
@@ -78,6 +80,14 @@ const FlightFilterCard = () => {
         ...prevQueryInput,
         [field]: formatDate(value),
       }));
+    } else if (field === "adult" || field === "child" || field === "baby") {
+      setQueryInput((prevQueryInput) => ({
+        ...prevQueryInput,
+        passengers: {
+          ...prevQueryInput.passengers,
+          [field]: parseInt(value),
+        },
+      }));
     } else {
       setQueryInput((prevQueryInput) => ({
         ...prevQueryInput,
@@ -86,12 +96,35 @@ const FlightFilterCard = () => {
     }
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleButtonInput = (field: string, type: string) => {
+    if (type === "decrease") {
+      setQueryInput((prevQueryInput) => ({
+        ...prevQueryInput,
+        passengers: {
+          ...prevQueryInput.passengers,
+          [field]: prevQueryInput.passengers.child - 1,
+        },
+      }));
+    } else {
+      setQueryInput((prevQueryInput) => ({
+        ...prevQueryInput,
+        passengers: {
+          ...prevQueryInput.passengers,
+          [field]: prevQueryInput.passengers.child + 1,
+        },
+      }));
+    }
+  };
+
+  const handleClick1 = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl1(event.currentTarget);
+  };
+  const handleClick2 = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl2(event.currentTarget);
   };
 
   const handleFilter = (type: string) => {
-    setAnchorEl(null);
+    setAnchorEl1(null);
     setQueryInput((prevQueryInput) => ({
       ...prevQueryInput,
       class: type,
@@ -112,7 +145,7 @@ const FlightFilterCard = () => {
                   <MdFlightTakeoff size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">From</p>
                 </div>
-                <input type="text" className="w-full border-b-2 bg-transparent pb-3 font-medium outline-none" placeholder="Melbourne (MLB)" value={queryInput.departure} onChange={(e) => handleQueryInput(e, "departure")} />
+                <input type="text" className="w-full border-b-2 bg-transparent pb-3 font-medium outline-none" placeholder="Jakarta (JKT)" value={queryInput.departure} onChange={(e) => handleQueryInput(e, "departure")} />
               </div>
               <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" />
               <div className="flex w-[45%] items-center gap-5">
@@ -141,19 +174,98 @@ const FlightFilterCard = () => {
                 </div>
                 <div className="flex w-[45%] flex-col">
                   <p className="text-sm font-light text-neutral-3">Passengers</p>
-                  <input type="text" className="w-full border-b-2 pb-3 font-medium outline-none" value={`${queryInput.passengers.adult + queryInput.passengers.baby + queryInput.passengers.baby} Passengers`} placeholder="2 Passengers" />
+                  <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick2}>
+                    {queryInput.passengers.adult + queryInput.passengers.child + queryInput.passengers.baby} Passengers
+                  </button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl2}
+                    open={open2}
+                    onClose={() => {
+                      setAnchorEl2(null);
+                    }}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <div className="w-[25rem]">
+                      <div className="pr-3">
+                        <button className="ms-auto flex w-fit justify-end text-end text-2xl font-medium" onClick={() => setAnchorEl2(null)}>
+                          X
+                        </button>
+                      </div>
+                      <div className="border-t-2">
+                        <div className="flex flex-col p-3">
+                          <div className="flex w-full items-center justify-between border-b-2 py-3">
+                            <div className="flex w-[48%] items-start gap-1">
+                              <FaChild size={20} />
+                              <div className="flex w-full flex-col gap-1">
+                                <h5 className="text-sm font-bold">Adult</h5>
+                                <p className="text-xs font-normal">(12 years or older)</p>
+                              </div>
+                            </div>
+                            <div className="flex h-full w-1/2 justify-between">
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "decrease")}>
+                                -
+                              </button>
+                              <input type="number" min={0} value={queryInput.passengers.adult} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "adult")} />
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "increase")}>
+                                +
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex w-full items-center justify-between border-b-2 py-3">
+                            <div className="flex w-[48%] items-start gap-1">
+                              <FaChildDress size={20} />
+                              <div className="flex w-full flex-col gap-1">
+                                <h5 className="text-sm font-bold">Child</h5>
+                                <p className="text-xs font-normal"> (2 - 11 years old)</p>
+                              </div>
+                            </div>
+                            <div className="flex h-full w-1/2 justify-between">
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "decrease")}>
+                                -
+                              </button>
+                              <input type="number" min={0} value={queryInput.passengers.child} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "child")} />
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "increase")}>
+                                +
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex w-full items-center justify-between border-b-2 py-3">
+                            <div className="flex w-[48%] items-start gap-1">
+                              <FaBaby size={20} />
+                              <div className="flex w-full flex-col gap-1">
+                                <h5 className="text-sm font-bold">Baby</h5>
+                                <p className="text-xs font-normal"> (Under 2 years old)</p>
+                              </div>
+                            </div>
+                            <div className="flex h-full w-1/2 justify-between">
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "decrease")}>
+                                -
+                              </button>
+                              <input type="number" min={0} value={queryInput.passengers.baby} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "baby")} />
+                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "increase")}>
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Menu>
                 </div>
                 <div className="flex w-[45%] flex-col">
                   <p className="text-sm font-light text-neutral-3">Seat Class</p>
-                  <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick}>
+                  <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick1}>
                     {queryInput.class}
                   </button>
                   <Menu
                     id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
+                    anchorEl={anchorEl1}
+                    open={open1}
                     onClose={() => {
-                      setAnchorEl(null);
+                      setAnchorEl1(null);
                     }}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",

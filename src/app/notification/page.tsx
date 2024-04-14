@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Api
 import { getNotifications, putMarkAsReadNotifications } from "@/api/notifications-endpoints";
@@ -21,7 +22,14 @@ interface NotificationData {
 }
 
 const Notification = () => {
+  const router = useRouter();
   const [notificationData, setNotificationData] = useState<NotificationData[] | null>(null);
+
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("tokenUser");
+
+    if (!token) router.push("/");
+  }
 
   useEffect(() => {
     const fetchNotificationData = async () => {

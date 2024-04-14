@@ -67,7 +67,7 @@ export const getFlights = async (): Promise<FlightData[] | false> => {
 
 export const getFlightsQuery = async (query: string): Promise<FlightData[] | false> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.FLIGHTS}?${query}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.FLIGHTS}${query}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,6 +77,32 @@ export const getFlightsQuery = async (query: string): Promise<FlightData[] | fal
     if (response.ok) {
       const flights = await response.json();
       return flights.data.flights;
+    } else {
+      const errorMessage = await response.json();
+      showErrorToast(errorMessage.message);
+      return false;
+    }
+  } catch (error) {
+    showErrorToast("An unexpected error occurred");
+    return false;
+  }
+};
+
+export const getFlightById = async (flightId: number): Promise<FlightData | false> => {
+  try {
+    const token = localStorage.getItem("tokenUser");
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${API_ENDPOINT.FLIGHTS}/${flightId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const flight = await response.json();
+      return flight.data.flight;
     } else {
       const errorMessage = await response.json();
       showErrorToast(errorMessage.message);
