@@ -38,6 +38,7 @@ const Seat: React.FC<SeatProps> = ({ id, countPassengers, createBookingData, com
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   const [seatData, setSeatData] = useState<SeatData[] | null>(null);
+  let passengerNumber: number = 1;
 
   useEffect(() => {
     const fetchSeatData = async () => {
@@ -125,8 +126,11 @@ const Seat: React.FC<SeatProps> = ({ id, countPassengers, createBookingData, com
         <div className="mx-auto flex w-full flex-wrap items-center justify-evenly text-center">
           {seatData?.map((seat, index) => (
             <>
-              <div key={seat.id} className="mb-3 flex w-[14%] justify-center" onClick={() => toggleSeatSelection(seat.id)}>
-                <p className={`${selectedSeats.includes(seat.id) && "bg-primary"} ${seat.isBooked ? "bg-alert-green" : "bg-neutral-4"} flex h-10 w-10 cursor-pointer items-center justify-center rounded-md`}></p>
+              <div key={seat.id} className="mb-3 flex w-[14%] justify-center" onClick={() => (!seat.isBooked ? toggleSeatSelection(seat.id) : null)}>
+                <p className={`${selectedSeats.includes(seat.id) && "bg-primary"} ${seat.isBooked ? "bg-neutral-4" : "bg-alert-green"} flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-neutral-5 text-opacity-70`}>
+                  {seat.isBooked && "X"}
+                  {selectedSeats.includes(seat.id) && `P${passengerNumber++}`}
+                </p>
               </div>
               {index % 6 === 2 && (
                 <div className="mb-3 flex w-[14%] justify-center">
