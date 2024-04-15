@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRef, KeyboardEvent, MouseEvent } from "react";
 
 // Icons
@@ -9,6 +9,11 @@ import { LuSearch } from "react-icons/lu";
 const InputSearch = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const queryParams = searchParams.toString();
+  const searchValue = searchParams.get("search");
 
   const handleSearch = (event: KeyboardEvent<HTMLInputElement> | MouseEvent<SVGElement>) => {
     const keyword = searchRef.current?.value;
@@ -17,7 +22,21 @@ const InputSearch = () => {
 
     if ((event as KeyboardEvent<HTMLInputElement>).key === "Enter" || event.type === "click") {
       event.preventDefault();
-      //   router.push(`/search/${keyword}`);
+      if (pathname === "/flight") {
+        if (queryParams) {
+          if (searchValue) {
+            const newQueryParams = queryParams.replace(/search=([^&]*)/, `search=${keyword}`);
+            router.push(`/flight?${newQueryParams}`);
+          } else {
+            const newQueryParams = decodeURIComponent(queryParams.replace(/\+/g, "%20"));
+            router.push(`/flight?${newQueryParams}&search=${keyword}`);
+          }
+        } else {
+          router.push(`/flight?search=${keyword}`);
+        }
+      } else {
+        router.push(`/flight?search=${keyword}`);
+      }
     }
   };
 

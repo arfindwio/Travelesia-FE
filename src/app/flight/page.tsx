@@ -72,10 +72,11 @@ const Flight = () => {
   const date = searchParams.get("f");
   const seatClass = searchParams.get("s");
   const filter = searchParams.get("w");
+  const search = searchParams.get("search");
 
   useEffect(() => {
     let queryParams = "";
-    if (departure || arrival || date || seatClass || filter) {
+    if (departure || arrival || date || seatClass || filter || search) {
       if (departure) {
         queryParams += `d=${departure}&`;
       }
@@ -90,6 +91,9 @@ const Flight = () => {
       }
       if (filter) {
         queryParams += `w=${filter}&`;
+      }
+      if (search) {
+        queryParams += `search=${search}&`;
       }
 
       queryParams = queryParams.replace(/&$/, "");
@@ -115,7 +119,7 @@ const Flight = () => {
     } else {
       fetchFlightData();
     }
-  }, [departure, arrival, date, seatClass, filter]);
+  }, [departure, arrival, date, seatClass, filter, search]);
 
   useEffect(() => {
     const passengersJSON = localStorage.getItem("passengers");
