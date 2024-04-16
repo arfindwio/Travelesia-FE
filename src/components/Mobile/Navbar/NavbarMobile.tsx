@@ -28,23 +28,29 @@ const NavbarMobile = () => {
           <LuHome size={25} />
           <p className="text-sm font-medium">Home</p>
         </Link>
-        {!token && (
+        {!token ? (
           <Link href="/flight" className={`${pathname === "/flight" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
             <MdOutlineAirplaneTicket size={25} />
             <p className="text-sm font-medium">Flight</p>
           </Link>
+        ) : (
+          <>
+            <Link href="/history" className={`${pathname === "/history" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+              <LiaClipboardListSolid size={25} />
+              <p className="text-sm font-medium">History</p>
+            </Link>
+            <Link href="/notification" className={`${pathname === "/notification" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+              <FiBell size={25} />
+              <p className="text-sm font-medium">Notification</p>
+            </Link>
+          </>
         )}
-        <Link href="/history" className={`${pathname === "/history" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
-          <LiaClipboardListSolid size={25} />
-          <p className="text-sm font-medium">History</p>
-        </Link>
-        <Link href="/notification" className={`${pathname === "/notification" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
-          <FiBell size={25} />
-          <p className="text-sm font-medium">Notification</p>
-        </Link>
-        <Link href="/account/profile" className={`${pathname === "/account/profile" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+        <Link
+          href={token ? "/account/profile" : "/login"}
+          className={`${pathname === "/account/profile" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}
+        >
           <PiUserCircle size={25} />
-          <p className="text-sm font-medium">Profile</p>
+          <p className="text-sm font-medium">{token ? "Profile" : "Login"}</p>
         </Link>
       </div>
     </>
