@@ -61,13 +61,13 @@ const Notification = () => {
     <>
       <Navbar />
       <Topbar />
-      <div className="mt-4 px-20">
-        <div className="flex min-h-[60vh] w-full flex-col overflow-hidden rounded-xl border-2 border-primary-3">
+      <div className="px-6 pt-4 sm:px-10 sm:pt-4 lg:px-20">
+        <div className="flex min-h-[70vh] w-full flex-col overflow-hidden rounded-xl border-2 border-primary-3 bg-slate-100 sm:min-h-[60vh]">
           {notificationData?.length ? (
             notificationData.map((notification) => (
               <div
                 key={notification.id}
-                className={`${notification.isRead ? "bg-neutral-5 hover:bg-primary-5" : "bg-primary-5"} group flex h-fit w-full cursor-pointer gap-3 bg-opacity-30 px-10 py-6 hover:bg-opacity-100`}
+                className={`${notification.isRead ? "bg-neutral-5 hover:bg-primary-5" : "bg-primary-5"} group flex h-fit w-full cursor-pointer gap-2 bg-opacity-30 px-2 py-4 hover:bg-opacity-100 sm:gap-3 sm:px-10 sm:py-6`}
                 onClick={() => handleNotificationClick(notification.id)}
               >
                 <div className="h-fit w-fit rounded-full bg-primary-4 p-1">
@@ -75,13 +75,13 @@ const Notification = () => {
                 </div>
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex w-full items-center justify-between">
-                    <p className="text-sm font-medium text-neutral-4 group-hover:text-neutral-5">{notification.title}</p>
+                    <p className="text-xs font-medium text-neutral-4 group-hover:text-neutral-5 sm:text-sm">{notification.title}</p>
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-neutral-4 group-hover:text-neutral-5">{notification.createdAt}</p>
+                      <p className="text-xs font-medium text-neutral-4 group-hover:text-neutral-5 sm:text-sm">{notification.createdAt}</p>
                       <div className={`${notification.isRead ? "bg-alert-green" : "bg-alert-red"} h-2 w-2 rounded-full `}></div>
                     </div>
                   </div>
-                  <p className="text-base">{notification.message}</p>
+                  <p className="text-sm">{notification.message}</p>
                 </div>
               </div>
             ))

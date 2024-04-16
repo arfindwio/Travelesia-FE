@@ -32,6 +32,7 @@ interface ValidateChangePassword {
 const Setting = () => {
   const router = useRouter();
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
@@ -50,6 +51,22 @@ const Setting = () => {
 
     if (!token) return router.push("/");
   }, [router]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     const value = e.target.value;
@@ -125,13 +142,15 @@ const Setting = () => {
     <>
       <Navbar />
       <Topbar />
-      <div className="mt-4 px-20">
+      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-4 lg:px-20">
         <div className="flex w-full justify-between gap-6 rounded-xl border-2 border-primary-3 bg-slate-100 p-10">
-          <div className="flex w-[40%] flex-col gap-6">
-            <SidebarAccount />
-          </div>
-          <div className="w-[55%]">
-            <div className="mx-auto flex w-[70%] flex-col gap-5" onKeyDown={(e) => (e.key === "Enter" ? handleChangePassword() : "")}>
+          {!isMobile && (
+            <div className="flex w-[40%] flex-col gap-6">
+              <SidebarAccount />
+            </div>
+          )}
+          <div className="w-full sm:w-[55%]">
+            <div className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={(e) => (e.key === "Enter" ? handleChangePassword() : "")}>
               <h4 className="mb-3 text-center text-2xl font-bold">Change Password</h4>
               <div className="flex w-full flex-col">
                 <label htmlFor="oldPassword">Enter Old Password</label>
