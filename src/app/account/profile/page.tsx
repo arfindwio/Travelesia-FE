@@ -32,6 +32,7 @@ interface InputUserProfile {
 const Profile = () => {
   const router = useRouter();
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [dataImage, setDataImage] = useState<string>("");
   const [inputUserProfile, setInputUserProfile] = useState<InputUserProfile>({
     image: null,
@@ -47,6 +48,22 @@ const Profile = () => {
 
     if (!token) router.push("/");
   }
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -106,13 +123,15 @@ const Profile = () => {
     <>
       <Navbar />
       <Topbar />
-      <div className="mb-8 mt-4 px-20">
+      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-4 lg:px-20">
         <div className="flex w-full justify-between gap-6 rounded-xl border-2 border-primary-3 bg-slate-100 p-10">
-          <div className="flex w-[40%] flex-col gap-6">
-            <SidebarAccount />
-          </div>
-          <div className="w-[55%]">
-            <div className="mx-auto flex w-[70%] flex-col gap-5" onKeyDown={(e) => (e.key === "Enter" ? handleUserProfile() : "")}>
+          {!isMobile && (
+            <div className="flex w-[40%] flex-col gap-6">
+              <SidebarAccount />
+            </div>
+          )}
+          <div className="w-full sm:w-[55%]">
+            <div className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={(e) => (e.key === "Enter" ? handleUserProfile() : "")}>
               <div className="mx-auto w-fit">
                 <label htmlFor="image" className="relative w-fit cursor-pointer">
                   <Image
