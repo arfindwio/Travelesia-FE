@@ -1,10 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-
-// Api
-import { getFlightById } from "@/api/flights-endpoints";
 
 // Icons
 import { GiLotus } from "react-icons/gi";

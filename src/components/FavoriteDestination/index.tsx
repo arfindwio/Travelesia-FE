@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
+// Swiper
+import { Swiper, SwiperSlide } from "swiper/react";
+
 // Api
 import { getFlights, getFlightsQuery } from "@/api/flights-endpoints";
 
@@ -54,9 +57,26 @@ interface FlightData {
 const FavoriteDestination = () => {
   const searchParams = useSearchParams();
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [flights, setFlights] = useState<FlightData[] | null>(null);
 
   const continent = searchParams.get("c");
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchFlightData = async () => {
@@ -74,9 +94,16 @@ const FavoriteDestination = () => {
 
   return (
     <>
-      <h1 className="text-base font-bold">Favorite Destination</h1>
+      <h1 className="text-lg font-bold sm:text-xl">Favorite Destination</h1>
       <DestinationFilterButton />
-      <div className="flex justify-start gap-5">{flights && flights.map((flight) => <DestinationCard key={flight.id} flight={flight} />)}</div>
+      <Swiper slidesPerView={isMobile ? 3 : 5} centeredSlides={false} spaceBetween={10} grabCursor={true} className="flex w-full overflow-x-auto">
+        {flights &&
+          flights.map((flight) => (
+            <SwiperSlide key={flight.id} className="pb-3">
+              <DestinationCard flight={flight} />
+            </SwiperSlide>
+          ))}
+      </Swiper>
     </>
   );
 };
