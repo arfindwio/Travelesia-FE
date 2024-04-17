@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface AirportData {
   airportName: string;
@@ -42,6 +43,8 @@ interface FlightData {
 }
 
 const DestinationCard = ({ flight }: { flight: FlightData }) => {
+  const router = useRouter();
+
   const getDate = (inputDate: string): string => {
     const date = new Date(inputDate);
     const day = date.getDate().toString();
@@ -64,19 +67,21 @@ const DestinationCard = ({ flight }: { flight: FlightData }) => {
   };
 
   return (
-    <div className="flex w-[18%] cursor-pointer flex-col gap-[2px] p-2 shadow-md">
-      <Image src="/ImageFlight.svg" alt="Image Flight" width={1} height={1} className="w-full" />
-      <p className="text-sm font-medium">
-        {flight.departureTerminal.airport.city} -&gt; {flight.arrivalTerminal.airport.city}
-      </p>
-      <p className="text-xs font-bold text-primary">{flight.airline.airlineName}</p>
-      <p className="text-xs">
-        {getDate(flight.departureTime)} - {formatDate(flight.arrivalTime)}
-      </p>
-      <p className="text-sm">
-        Price <span className="font-bold text-alert-red">{flight.price}</span>
-      </p>
-    </div>
+    <>
+      <div className="flex w-full cursor-pointer flex-col gap-[2px] border p-2 shadow-md" onClick={() => router.push(`/flight/${flight.id}`)}>
+        <Image src="/ImageFlight.svg" alt="Image Flight" width={1} height={1} className="w-full" />
+        <p className="text-sm font-medium">
+          {flight.departureTerminal.airport.city} -&gt; {flight.arrivalTerminal.airport.city}
+        </p>
+        <p className="text-xs font-bold text-primary">{flight.airline.airlineName}</p>
+        <p className="text-xs">
+          {getDate(flight.departureTime)} - {formatDate(flight.arrivalTime)}
+        </p>
+        <p className="text-sm">
+          Price <span className="font-bold text-alert-red">{flight.price}</span>
+        </p>
+      </div>
+    </>
   );
 };
 

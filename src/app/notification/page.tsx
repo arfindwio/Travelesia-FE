@@ -67,7 +67,7 @@ const Notification = () => {
             notificationData.map((notification) => (
               <div
                 key={notification.id}
-                className={`${notification.isRead ? "bg-neutral-5 hover:bg-primary-5" : "bg-primary-5"} group flex h-fit w-full cursor-pointer gap-2 bg-opacity-30 px-2 py-4 hover:bg-opacity-100 sm:gap-3 sm:px-10 sm:py-6`}
+                className={`${notification.isRead ? "bg-slate-100 hover:bg-primary-5" : "bg-primary-5"} group flex h-fit w-full cursor-pointer gap-2 bg-opacity-30 px-2 py-4 hover:bg-opacity-100 sm:gap-3 sm:px-10 sm:py-6`}
                 onClick={() => handleNotificationClick(notification.id)}
               >
                 <div className="h-fit w-fit rounded-full bg-primary-4 p-1">

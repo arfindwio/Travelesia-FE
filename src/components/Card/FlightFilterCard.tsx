@@ -25,6 +25,7 @@ interface QueryInput {
 }
 
 const FlightFilterCard = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [queryParams, setQueryParams] = useState<string>("/flight");
   const [queryInput, setQueryInput] = useState<QueryInput>({
     departure: "",
@@ -37,6 +38,22 @@ const FlightFilterCard = () => {
   const open1 = Boolean(anchorEl1);
   const [anchorEl2, setAnchorEl2] = useState<HTMLElement | null>(null);
   const open2 = Boolean(anchorEl2);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
 
   useEffect(() => {
     const passengersJSON = localStorage.getItem("passengers");
@@ -96,6 +113,14 @@ const FlightFilterCard = () => {
     }
   };
 
+  const handleSwapDepartureArrival = () => {
+    setQueryInput({
+      ...queryInput,
+      departure: queryInput.arrival,
+      arrival: queryInput.departure,
+    });
+  };
+
   const handleButtonInput = (field: string, type: string) => {
     if (type === "decrease") {
       setQueryInput((prevQueryInput) => ({
@@ -134,190 +159,199 @@ const FlightFilterCard = () => {
   return (
     <>
       <div className="overflow-hidden rounded-xl bg-neutral-5 shadow-lg">
-        <div className="flex flex-col gap-5 px-10 py-7">
+        <div className="flex flex-col gap-5 px-5 py-5 sm:px-10 sm:py-7">
           <h1 className="text-lg font-bold">
             Choose Special Flight Schedules on <span className="text-primary-3">Travelesia!</span>
           </h1>
           <div className="flex flex-col gap-5">
-            <div className="flex w-full items-center justify-between gap-2">
-              <div className="flex w-[45%] items-center gap-5">
-                <div className="flex items-center gap-1">
+            <div className="flex w-full flex-col items-center justify-between gap-2 rounded-xl border-2 p-4 sm:flex-row sm:rounded-none sm:border-none sm:p-0">
+              <div className="flex w-full items-center justify-between gap-5 sm:w-[45%]">
+                <div className="flex items-center gap-3 sm:w-auto sm:gap-1">
                   <MdFlightTakeoff size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">From</p>
                 </div>
-                <input type="text" className="w-full border-b-2 bg-transparent pb-3 font-medium outline-none" placeholder="Jakarta (JKT)" value={queryInput.departure} onChange={(e) => handleQueryInput(e, "departure")} />
+                <input type="text" className="w-[80%] bg-transparent font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3" placeholder="Jakarta (JKT)" value={queryInput.departure} onChange={(e) => handleQueryInput(e, "departure")} />
               </div>
-              <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" />
-              <div className="flex w-[45%] items-center gap-5">
-                <div className="flex items-center gap-1">
+              {isMobile ? (
+                <div className="flex w-full items-center justify-end gap-3">
+                  <div className="w-[85%] border-t-2"></div>
+                  <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" onClick={handleSwapDepartureArrival} />
+                </div>
+              ) : (
+                <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" onClick={handleSwapDepartureArrival} />
+              )}
+              <div className="flex w-full items-center justify-between gap-5 sm:w-[45%]">
+                <div className="flex items-center gap-3 sm:w-auto sm:gap-1">
                   <MdFlightTakeoff size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">To</p>
                 </div>
-                <input type="text" className="w-full border-b-2 pb-3 font-medium outline-none" placeholder="Melbourne (MLB)" value={queryInput.arrival} onChange={(e) => handleQueryInput(e, "arrival")} />
+                <input type="text" className="w-[80%] font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3" placeholder="Melbourne (MLB)" value={queryInput.arrival} onChange={(e) => handleQueryInput(e, "arrival")} />
               </div>
             </div>
-            <div className="flex w-full items-center justify-between gap-2">
-              <div className="flex w-[45%] items-center gap-5">
-                <div className="flex items-center gap-1">
+            <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row">
+              <div className="flex w-full items-center sm:w-[45%] sm:gap-5">
+                <div className="flex w-[15%] items-center gap-1 sm:w-auto">
                   <MdOutlineDateRange size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">Date</p>
                 </div>
-                <div className="flex w-full flex-col">
+                <div className="flex w-[85%] flex-col sm:w-full">
                   <p className="text-sm font-light text-neutral-3">Departure</p>
                   <input type="date" className="w-full border-b-2 pb-3 font-medium outline-none" placeholder="1 Maret 2023" onChange={(e) => handleQueryInput(e, "date")} />
                 </div>
               </div>
-              <div className="flex w-[45%] items-center gap-5">
-                <div className="flex items-center gap-1">
+              <div className="flex w-full items-center justify-between sm:w-[45%] sm:gap-5">
+                <div className="flex w-[15%] items-center gap-1 sm:w-auto">
                   <MdOutlineAirlineSeatReclineNormal size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">To</p>
                 </div>
-                <div className="flex w-[45%] flex-col">
-                  <p className="text-sm font-light text-neutral-3">Passengers</p>
-                  <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick2}>
-                    {queryInput.passengers.adult + queryInput.passengers.child + queryInput.passengers.baby} Passengers
-                  </button>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl2}
-                    open={open2}
-                    onClose={() => {
-                      setAnchorEl2(null);
-                    }}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  >
-                    <div className="w-[25rem]">
-                      <div className="pr-3">
-                        <button className="ms-auto flex w-fit justify-end text-end text-2xl font-medium" onClick={() => setAnchorEl2(null)}>
-                          X
-                        </button>
-                      </div>
-                      <div className="border-t-2">
-                        <div className="flex flex-col p-3">
-                          <div className="flex w-full items-center justify-between border-b-2 py-3">
-                            <div className="flex w-[48%] items-start gap-1">
-                              <FaChild size={20} />
-                              <div className="flex w-full flex-col gap-1">
-                                <h5 className="text-sm font-bold">Adult</h5>
-                                <p className="text-xs font-normal">(12 years or older)</p>
+                <div className="flex w-[85%] justify-between">
+                  <div className="flex w-[49%] flex-col sm:w-[40%]">
+                    <p className="text-sm font-light text-neutral-3">Passengers</p>
+                    <button className="w-full break-all border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick2}>
+                      {queryInput.passengers.adult + queryInput.passengers.child + queryInput.passengers.baby} Passengers
+                    </button>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl2}
+                      open={open2}
+                      onClose={() => {
+                        setAnchorEl2(null);
+                      }}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <div className="w-[25rem]">
+                        <div className="pr-3">
+                          <button className="ms-auto flex w-fit justify-end text-end text-2xl font-medium" onClick={() => setAnchorEl2(null)}>
+                            X
+                          </button>
+                        </div>
+                        <div className="border-t-2">
+                          <div className="flex flex-col p-3">
+                            <div className="flex w-full items-center justify-between border-b-2 py-3">
+                              <div className="flex w-[48%] items-start gap-1">
+                                <FaChild size={20} />
+                                <div className="flex w-full flex-col gap-1">
+                                  <h5 className="text-sm font-bold">Adult</h5>
+                                  <p className="text-xs font-normal">(12 years or older)</p>
+                                </div>
+                              </div>
+                              <div className="flex h-full w-1/2 justify-between">
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "decrease")}>
+                                  -
+                                </button>
+                                <input type="number" min={0} value={queryInput.passengers.adult} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "adult")} />
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "increase")}>
+                                  +
+                                </button>
                               </div>
                             </div>
-                            <div className="flex h-full w-1/2 justify-between">
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "decrease")}>
-                                -
-                              </button>
-                              <input type="number" min={0} value={queryInput.passengers.adult} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "adult")} />
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "increase")}>
-                                +
-                              </button>
-                            </div>
-                          </div>
-                          <div className="flex w-full items-center justify-between border-b-2 py-3">
-                            <div className="flex w-[48%] items-start gap-1">
-                              <FaChildDress size={20} />
-                              <div className="flex w-full flex-col gap-1">
-                                <h5 className="text-sm font-bold">Child</h5>
-                                <p className="text-xs font-normal"> (2 - 11 years old)</p>
+                            <div className="flex w-full items-center justify-between border-b-2 py-3">
+                              <div className="flex w-[48%] items-start gap-1">
+                                <FaChildDress size={20} />
+                                <div className="flex w-full flex-col gap-1">
+                                  <h5 className="text-sm font-bold">Child</h5>
+                                  <p className="text-xs font-normal"> (2 - 11 years old)</p>
+                                </div>
+                              </div>
+                              <div className="flex h-full w-1/2 justify-between">
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "decrease")}>
+                                  -
+                                </button>
+                                <input type="number" min={0} value={queryInput.passengers.child} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "child")} />
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "increase")}>
+                                  +
+                                </button>
                               </div>
                             </div>
-                            <div className="flex h-full w-1/2 justify-between">
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "decrease")}>
-                                -
-                              </button>
-                              <input type="number" min={0} value={queryInput.passengers.child} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "child")} />
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "increase")}>
-                                +
-                              </button>
-                            </div>
-                          </div>
-                          <div className="flex w-full items-center justify-between border-b-2 py-3">
-                            <div className="flex w-[48%] items-start gap-1">
-                              <FaBaby size={20} />
-                              <div className="flex w-full flex-col gap-1">
-                                <h5 className="text-sm font-bold">Baby</h5>
-                                <p className="text-xs font-normal"> (Under 2 years old)</p>
+                            <div className="flex w-full items-center justify-between border-b-2 py-3">
+                              <div className="flex w-[48%] items-start gap-1">
+                                <FaBaby size={20} />
+                                <div className="flex w-full flex-col gap-1">
+                                  <h5 className="text-sm font-bold">Baby</h5>
+                                  <p className="text-xs font-normal"> (Under 2 years old)</p>
+                                </div>
                               </div>
-                            </div>
-                            <div className="flex h-full w-1/2 justify-between">
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "decrease")}>
-                                -
-                              </button>
-                              <input type="number" min={0} value={queryInput.passengers.baby} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "baby")} />
-                              <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "increase")}>
-                                +
-                              </button>
+                              <div className="flex h-full w-1/2 justify-between">
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "decrease")}>
+                                  -
+                                </button>
+                                <input type="number" min={0} value={queryInput.passengers.baby} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "baby")} />
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "increase")}>
+                                  +
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Menu>
-                </div>
-                <div className="flex w-[45%] flex-col">
-                  <p className="text-sm font-light text-neutral-3">Seat Class</p>
-                  <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick1}>
-                    {queryInput.class}
-                  </button>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl1}
-                    open={open1}
-                    onClose={() => {
-                      setAnchorEl1(null);
-                    }}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  >
-                    <div className="p-2">
-                      <div
-                        onClick={() => handleFilter("Economy")}
-                        className={`${queryInput.class === "Economy" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
-                      >
-                        <p className="text-sm font-bold">Economy</p>
-                        {queryInput.class === "Economy" && (
-                          <div className="rounded-full bg-alert-green p-1">
-                            <FaCheck size={15} className="text-neutral-5" />
-                          </div>
-                        )}
+                    </Menu>
+                  </div>
+                  <div className="flex w-[49%] flex-col sm:w-[40%]">
+                    <p className="text-sm font-light text-neutral-3">Seat Class</p>
+                    <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick1}>
+                      {queryInput.class}
+                    </button>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl1}
+                      open={open1}
+                      onClose={() => {
+                        setAnchorEl1(null);
+                      }}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <div className="p-2">
+                        <div
+                          onClick={() => handleFilter("Economy")}
+                          className={`${queryInput.class === "Economy" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
+                        >
+                          <p className="text-sm font-bold">Economy</p>
+                          {queryInput.class === "Economy" && (
+                            <div className="rounded-full bg-alert-green p-1">
+                              <FaCheck size={15} className="text-neutral-5" />
+                            </div>
+                          )}
+                        </div>
+                        <div
+                          onClick={() => handleFilter("Premium Economy")}
+                          className={`${queryInput.class === "Premium Economy" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
+                        >
+                          <p className="text-sm font-bold">Premium Economy</p>
+                          {queryInput.class === "Premium Economy" && (
+                            <div className="rounded-full bg-alert-green p-1">
+                              <FaCheck size={15} className="text-neutral-5" />
+                            </div>
+                          )}
+                        </div>
+                        <div
+                          onClick={() => handleFilter("Business")}
+                          className={`${queryInput.class === "Business" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
+                        >
+                          <p className="text-sm font-bold">Business</p>
+                          {queryInput.class === "Business" && (
+                            <div className="rounded-full bg-alert-green p-1">
+                              <FaCheck size={15} className="text-neutral-5" />
+                            </div>
+                          )}
+                        </div>
+                        <div
+                          onClick={() => handleFilter("First Class")}
+                          className={`${queryInput.class === "First Class" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
+                        >
+                          <p className="text-sm font-bold">First Class</p>
+                          {queryInput.class === "First Class" && (
+                            <div className="rounded-full bg-alert-green p-1">
+                              <FaCheck size={15} className="text-neutral-5" />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div
-                        onClick={() => handleFilter("Premium Economy")}
-                        className={`${queryInput.class === "Premium Economy" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
-                      >
-                        <p className="text-sm font-bold">Premium Economy</p>
-                        {queryInput.class === "Premium Economy" && (
-                          <div className="rounded-full bg-alert-green p-1">
-                            <FaCheck size={15} className="text-neutral-5" />
-                          </div>
-                        )}
-                      </div>
-                      <div
-                        onClick={() => handleFilter("Business")}
-                        className={`${queryInput.class === "Business" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
-                      >
-                        <p className="text-sm font-bold">Business</p>
-                        {queryInput.class === "Business" && (
-                          <div className="rounded-full bg-alert-green p-1">
-                            <FaCheck size={15} className="text-neutral-5" />
-                          </div>
-                        )}
-                      </div>
-                      <div
-                        onClick={() => handleFilter("First Class")}
-                        className={`${queryInput.class === "First Class" ? `bg-primary text-neutral-5` : ""} flex w-[18rem] cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-primary hover:text-neutral-5`}
-                      >
-                        <p className="text-sm font-bold">First Class</p>
-                        {queryInput.class === "First Class" && (
-                          <div className="rounded-full bg-alert-green p-1">
-                            <FaCheck size={15} className="text-neutral-5" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Menu>
+                    </Menu>
+                  </div>
                 </div>
               </div>
             </div>

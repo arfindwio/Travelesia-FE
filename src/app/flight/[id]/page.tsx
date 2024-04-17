@@ -130,7 +130,14 @@ const FlightId = ({ params: { id } }: { params: { id: number } }) => {
   }, [formComplete.passengers, formComplete.seats]);
 
   useEffect(() => {
+    const token = localStorage.getItem("tokenUser");
     const passengersJSON = localStorage.getItem("passengers");
+
+    if (!passengersJSON) localStorage.setItem("passengers", JSON.stringify({ adult: 1, child: 0, baby: 0 }));
+
+    if (!token) {
+      router.push("/");
+    }
 
     if (passengersJSON) {
       const passengers = JSON.parse(passengersJSON);
@@ -141,24 +148,19 @@ const FlightId = ({ params: { id } }: { params: { id: number } }) => {
       });
     }
 
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       const user = await getAuthenticateUser();
+      const flight = await getFlightById(id);
       if (user) {
         setUserData(user);
       }
-    };
-
-    const fetchFlightData = async () => {
-      const flight = await getFlightById(id);
       if (flight) {
         setFlightData(flight);
       }
     };
 
-    fetchFlightData();
-
-    fetchUserData();
-  }, []);
+    fetchData();
+  }, [id]);
 
   const handleCreateBooking = async () => {
     const adultPrice = passengersValue && flightData ? Number(passengersValue.adult) * Number(flightData.price) : 0;
@@ -168,8 +170,6 @@ const FlightId = ({ params: { id } }: { params: { id: number } }) => {
     const amount = adultPrice + childPrice + babyPrice * 1.11;
 
     const loadingToastId = showLoadingToast("Loading...");
-
-    console.log(Number(passengersValue?.adult));
 
     const createBooking = await postCreateBooking({
       flightId: id,
