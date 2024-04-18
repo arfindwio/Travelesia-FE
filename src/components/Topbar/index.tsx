@@ -44,7 +44,7 @@ const Topbar = () => {
       {!isMobile && (
         <div className="flex items-center justify-between gap-4">
           <div className={`${pathName === "/account/profile" || pathName === "/account/setting" ? "w-full" : "w-[90%]"} flex items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5`}>
-            <Link href="/" className="flex w-fit">
+            <Link href="/" scroll={false} className="flex w-fit">
               <IoArrowBack size={25} />
               <p className="pl-2 text-base font-bold">Homepage</p>
             </Link>

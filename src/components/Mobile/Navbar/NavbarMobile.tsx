@@ -24,22 +24,26 @@ const NavbarMobile = () => {
   return (
     <>
       <div className="bt-1 fixed bottom-0 z-50 flex w-full items-start justify-between border-t bg-neutral-5 pt-3 shadow-md">
-        <Link href="/" className={`${pathname === "/" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+        <Link href="/" scroll={false} className={`${pathname === "/" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
           <LuHome size={25} />
           <p className="text-sm font-medium">Home</p>
         </Link>
         {!token ? (
-          <Link href="/flight" className={`${pathname === "/flight" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+          <Link href="/flight" scroll={false} className={`${pathname === "/flight" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
             <MdOutlineAirplaneTicket size={25} />
             <p className="text-sm font-medium">Flight</p>
           </Link>
         ) : (
           <>
-            <Link href="/history" className={`${pathname === "/history" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+            <Link href="/history" scroll={false} className={`${pathname === "/history" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
               <LiaClipboardListSolid size={25} />
               <p className="text-sm font-medium">History</p>
             </Link>
-            <Link href="/notification" className={`${pathname === "/notification" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}>
+            <Link
+              href="/notification"
+              scroll={false}
+              className={`${pathname === "/notification" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}
+            >
               <FiBell size={25} />
               <p className="text-sm font-medium">Notification</p>
             </Link>
@@ -47,6 +51,7 @@ const NavbarMobile = () => {
         )}
         <Link
           href={token ? "/account/profile" : "/login"}
+          scroll={false}
           className={`${pathname === "/account/profile" ? "text-primary" : "text-neutral-3"} ${token ? " w-[24.5%]" : "w-[33%]"} flex flex-col items-center justify-center gap-1 break-all text-center`}
         >
           <PiUserCircle size={25} />

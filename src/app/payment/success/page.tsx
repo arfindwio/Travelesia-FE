@@ -30,10 +30,10 @@ const PaymentSuccess = () => {
           <p className="text-sm font-medium">Ticket Payment Transaction Successful!</p>
         </div>
         <div className="mx-auto mt-6 flex w-full flex-col items-center justify-center gap-3">
-          <Link href="/history" className="w-[20rem] rounded-xl bg-primary py-3 text-center text-neutral-5">
+          <Link href="/history" scroll={false} className="w-[20rem] rounded-xl bg-primary py-3 text-center text-neutral-5">
             Check Payment History
           </Link>
-          <Link href="/" className="w-[20rem] rounded-xl bg-primary-4 py-3 text-center text-neutral-5">
+          <Link href="/" scroll={false} className="w-[20rem] rounded-xl bg-primary-4 py-3 text-center text-neutral-5">
             Back to Home
           </Link>
         </div>

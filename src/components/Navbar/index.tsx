@@ -34,8 +34,8 @@ const Navbar = () => {
       {!isMobile && (
         <header className="fixed z-50 flex w-full items-center justify-between border-b bg-neutral-5 px-10 py-2 shadow-md lg:px-20">
           <div className="flex w-fit items-center justify-between">
-            <Link href="/">
-              <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={85} height={20} />
+            <Link href="/" scroll={false}>
+              <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={0} height={0} className="w-[5.3rem]" />
             </Link>
             <InputSearch />
           </div>

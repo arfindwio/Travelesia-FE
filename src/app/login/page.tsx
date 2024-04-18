@@ -56,12 +56,12 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex">
-        <div className="flex min-h-screen w-1/2 items-center justify-center gap-4 bg-gradient-to-b from-primary from-15% via-primary-3 via-65% to-primary-5">
-          <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={180} height={37} />
-          <h1 className="font-sans text-6xl text-neutral-5">Travelesia</h1>
+      <div className="flex min-h-screen">
+        <div className="hidden min-h-screen items-center justify-center gap-4 bg-gradient-to-b from-primary from-15% via-primary-3 via-65% to-primary-5 md:flex md:w-1/2">
+          <Image src="/TravelesiaLogo.svg" alt="Travelesia Logo" width={1} height={1} className="w-1/3" />
+          <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
         </div>
-        <div className="flex w-1/2 items-center px-[10%]">
+        <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
           <form className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleLogin() : "")}>
             <h5 className="mb-2 text-2xl font-semibold">Login</h5>
             <div className="flex w-full flex-col">
@@ -126,13 +126,13 @@ const Login = () => {
             <div className="mt-1">
               <p className="text-center text-sm">
                 Don't have an account?
-                <Link href="/register" className="ms-2 font-bold text-primary">
+                <Link href="/register" scroll={false} className="ms-2 font-bold text-primary">
                   Register here
                 </Link>
               </p>
               <p className="text-center text-sm">
                 Account not verified?
-                <Link href="/verify-account" className="ms-2 font-bold text-primary">
+                <Link href="/verify-account" scroll={false} className="ms-2 font-bold text-primary">
                   Verify it here
                 </Link>
               </p>
