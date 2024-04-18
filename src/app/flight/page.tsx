@@ -177,14 +177,14 @@ const Flight = () => {
   return (
     <>
       <Navbar />
-      <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-20 pb-4 pt-24 shadow-md">
-        <h1 className="text-xl font-bold">Flight Detail</h1>
-        <div className="flex justify-between gap-4">
-          <div className="flex w-[78%] items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5">
+      <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 pb-4 shadow-md sm:px-10 sm:pt-24 lg:px-20">
+        <h1 className="hidden text-xl font-bold sm:block">Flight Detail</h1>
+        <div className="flex justify-between">
+          <div className="flex w-full items-center bg-primary px-3 py-4 text-neutral-5 sm:w-[78%] sm:rounded-xl sm:bg-primary-3 sm:py-2 lg:py-4">
             <IoArrowBack size={25} />
-            <p className="pl-2 text-base font-bold">{valueQuery}</p>
+            <p className="pl-2 text-sm font-bold sm:text-sm lg:text-base">{valueQuery}</p>
           </div>
-          <Link href="/" className="w-[20%] rounded-xl bg-alert-green px-3 py-4 text-center text-base font-bold text-neutral-5">
+          <Link href="/" scroll={false} className="my-auto hidden rounded-xl bg-alert-green px-3 py-4 text-center font-bold text-neutral-5 sm:block sm:w-[20%] sm:py-2 sm:text-sm lg:py-4 lg:text-base">
             Change Route
           </Link>
         </div>
@@ -192,7 +192,7 @@ const Flight = () => {
           <DateFilterButton onFilterDateChange={handleFilterDateChange} />
         </div>
       </div>
-      <div className="flex flex-col gap-4 px-40 py-10">
+      <div className="flex flex-col gap-4 px-3 pb-24 pt-5 sm:px-10 sm:py-10 lg:px-40">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold">Flight Tickets</h1>
           <SortFilterButton onFilterChange={handleFilterChange} />
@@ -201,7 +201,7 @@ const Flight = () => {
           flights.map((flight) => <FlightCard key={flight.id} flight={flight} />)
         ) : (
           <div className="flex w-full flex-col items-center justify-center gap-4 py-6">
-            <Image src="/flightNotFound.svg" alt="Flight Not Found" width={1} height={1} className="w-[25%]" />
+            <Image src="/flightNotFound.svg" alt="Flight Not Found" width={0} height={0} className="w-[25%]" />
             <div className="flex w-full flex-col text-center">
               <p className="text-sm font-medium text-neutral-1">Sorry, Tickets Sold Out!</p>
               <p className="text-sm font-medium text-primary">Try finding another journey!</p>

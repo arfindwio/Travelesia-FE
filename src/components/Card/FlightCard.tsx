@@ -68,7 +68,7 @@ const FlightCard = ({ flight }: { flight: FlightData }) => {
         setFlightDetail(!flightDetail);
       }}
     >
-      <div className="flex flex-col gap-3 pb-5">
+      <div className={`${flightDetail && "pb-5"} flex flex-col gap-3`}>
         <div className="flex justify-between">
           <div className="flex w-2/3 items-center gap-2">
             <GiLotus size={25} className="text-alert-yellow" />
@@ -80,33 +80,33 @@ const FlightCard = ({ flight }: { flight: FlightData }) => {
             {flightDetail ? <IoIosArrowUp size={20} className="font-semibold" /> : <IoIosArrowDown size={20} className="font-semibold" />}
           </div>
         </div>
-        <div className="flex justify-between px-5">
-          <div className="flex w-2/3 items-center gap-3">
-            <div className="flex flex-col gap-1 text-center">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:px-5">
+          <div className="flex w-full items-center sm:w-2/3 sm:gap-3">
+            <div className="flex w-[30%] flex-col gap-1 text-center sm:w-auto">
               <p className="text-sm font-bold">{flight.departureTime.split(" ")[0]}</p>
               <p className="text-xs font-semibold">{flight.departureTerminal.airport.city}</p>
             </div>
-            <div className="flex w-1/2 flex-col gap-1 text-center text-neutral-3">
-              <p className="text-sm">{formatDuration(flight.duration)}</p>
+            <div className="flex w-[30%] flex-col gap-1 text-center text-neutral-3 sm:w-1/2">
+              <p className="text-xs sm:text-sm">{formatDuration(flight.duration)}</p>
               <Image src="/LongArrow.svg" alt="arrow" width={1} height={1} className="w-full" />
-              <p className="text-sm">Direct</p>
+              <p className="text-xs sm:text-sm">Direct</p>
             </div>
-            <div className="flex flex-col gap-1 text-center">
+            <div className="flex w-[30%] flex-col gap-1 text-center sm:w-auto">
               <p className="text-sm font-bold">{flight.arrivalTime.split(" ")[0]}</p>
               <p className="text-xs font-semibold">{flight.arrivalTerminal.airport.city}</p>
             </div>
-            <PiSuitcaseRollingLight size={30} className="ms-8 text-primary-3" />
+            <PiSuitcaseRollingLight size={30} className="text-primary-3 sm:ms-8 sm:w-auto" />
           </div>
-          <div className="flex w-1/3 flex-col gap-2 ">
-            <h5 className="ml-auto w-fit text-base font-bold text-primary">IDR {flight.price.toLocaleString("id-ID")}</h5>
-            <button className="ml-auto w-fit rounded-xl bg-primary px-6 py-2 text-base text-neutral-5 hover:bg-primary-hover" onClick={() => router.push(`/flight/${flight.id}`)}>
+          <div className="flex w-full flex-row items-center justify-between gap-2 sm:w-1/3 sm:flex-col sm:items-start sm:justify-start ">
+            <h5 className="w-fit text-base font-bold text-primary sm:ml-auto">IDR {flight.price.toLocaleString("id-ID")}</h5>
+            <button className="w-fit rounded-xl bg-primary px-3 py-2 text-sm text-neutral-5 hover:bg-primary-hover sm:ml-auto sm:px-6 sm:text-base" onClick={() => router.push(`/flight/${flight.id}`)}>
               Choose
             </button>
           </div>
         </div>
       </div>
       {flightDetail && (
-        <div className="flex flex-col gap-2 border-t-2 border-neutral-3 px-4 py-6">
+        <div className="flex flex-col gap-2 border-t-2 border-neutral-3 pt-6 sm:px-4">
           <div className="flex flex-col pb-2">
             <h5 className="mb-2 text-sm font-bold text-primary">Flight Detail</h5>
             <div className="flex items-center justify-between">
@@ -118,8 +118,8 @@ const FlightCard = ({ flight }: { flight: FlightData }) => {
               {flight.departureTerminal.airport.airportName} - {flight.departureTerminal.terminalName}
             </p>
           </div>
-          <div className="mx-auto w-[40%] border-b-2 border-neutral-4"></div>
-          <div className="flex items-center gap-3 px-4 py-2">
+          <div className="mx-auto w-[70%] border-b-2 border-neutral-4 sm:w-[40%]"></div>
+          <div className="flex items-center gap-3 py-2 sm:px-4">
             <GiLotus size={25} className="text-alert-yellow" />
             <div className="flex flex-col">
               <h5 className="text-sm font-bold">
@@ -132,7 +132,7 @@ const FlightCard = ({ flight }: { flight: FlightData }) => {
               <p className="text-sm font-normal">In Flight Entertainment</p>
             </div>
           </div>
-          <div className="mx-auto w-[40%] border-b-2 border-neutral-4"></div>
+          <div className="mx-auto w-[70%] border-b-2 border-neutral-4 sm:w-[40%]"></div>
           <div className="flex flex-col pt-2">
             <div className="flex items-center justify-between">
               <h5 className="text-base font-bold">{flight.arrivalTime.split(" ")[0]}</h5>
