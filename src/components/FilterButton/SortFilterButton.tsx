@@ -29,15 +29,15 @@ const SortFilterButton: React.FC<FilterInputProp> = ({ onFilterChange }) => {
   return (
     <>
       <button
-        className="group ml-auto flex w-fit cursor-pointer items-center gap-2 rounded-full border-2 border-primary-3 bg-neutral-5 py-3 pl-4 pr-6 hover:border-neutral-5 hover:bg-primary"
+        className="group ml-auto flex w-fit cursor-pointer items-center rounded-full border-2 border-primary-3 bg-neutral-5 py-2 pl-2 pr-3 hover:border-neutral-5 hover:bg-primary sm:py-3 sm:pl-4 sm:pr-6"
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <LuArrowDownUp size={20} className="text-primary-3 group-hover:text-neutral-5" />
-        <p className="text-sm font-semibold text-primary-3 group-hover:text-neutral-5">{filter ? filter : "Sort"}</p>
+        <LuArrowDownUp size={20} className="w-10 text-primary-3 group-hover:text-neutral-5 sm:w-auto" />
+        <p className="pl-2 text-xs font-semibold text-primary-3 group-hover:text-neutral-5 sm:text-sm">{filter ? filter : "Sort"}</p>
       </button>
       <Menu
         id="basic-menu"

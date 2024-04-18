@@ -50,14 +50,14 @@ const DateFilterButton: React.FC<FilterDateInputProp> = ({ onFilterDateChange })
 
   return (
     <>
-      <div className="flex w-full items-center px-5">
+      <div className="flex w-full items-center gap-8 overflow-x-auto px-2 sm:gap-0 sm:overflow-auto sm:px-0 lg:px-5">
         {dates.map((date, index) => {
           const formattedDate = date.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "2-digit", day: "2-digit" });
           const [dayName, monthDate] = formattedDate.split(", ");
           return (
-            <div key={index} className="flex w-full items-center">
+            <div key={index} className="flex min-w-[40%] items-center gap-3 sm:min-w-[20%] sm:gap-0 md:min-w-[15%] lg:w-full lg:min-w-0">
               <div
-                className={`group flex w-full cursor-pointer flex-col gap-2 rounded-lg py-2 text-center  hover:text-neutral-5 ${selectedDate === monthDate ? "bg-primary text-neutral-5" : "hover:bg-primary-3"}`}
+                className={`group flex w-full cursor-pointer flex-col gap-2 rounded-lg py-2 text-center hover:text-neutral-5 ${selectedDate === monthDate ? "bg-primary text-neutral-5" : "hover:bg-primary-3"}`}
                 onClick={() => onFilterDateChange(formatDate(monthDate))}
               >
                 <p className="text-sm font-bold">{dayName}</p>

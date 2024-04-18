@@ -12,6 +12,7 @@ import { MdFlightTakeoff, MdOutlineDateRange, MdOutlineAirlineSeatReclineNormal 
 import { FaCheck, FaChild, FaChildDress, FaBaby } from "react-icons/fa6";
 
 interface PassengersInput {
+  [key: string]: number;
   adult: number;
   child: number;
   baby: number;
@@ -127,7 +128,7 @@ const FlightFilterCard = () => {
         ...prevQueryInput,
         passengers: {
           ...prevQueryInput.passengers,
-          [field]: prevQueryInput.passengers.child - 1,
+          [field]: Math.max(0, prevQueryInput.passengers[field] - 1),
         },
       }));
     } else {
@@ -135,7 +136,7 @@ const FlightFilterCard = () => {
         ...prevQueryInput,
         passengers: {
           ...prevQueryInput.passengers,
-          [field]: prevQueryInput.passengers.child + 1,
+          [field]: prevQueryInput.passengers[field] + 1,
         },
       }));
     }
@@ -170,22 +171,34 @@ const FlightFilterCard = () => {
                   <MdFlightTakeoff size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">From</p>
                 </div>
-                <input type="text" className="w-[80%] bg-transparent font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3" placeholder="Jakarta (JKT)" value={queryInput.departure} onChange={(e) => handleQueryInput(e, "departure")} />
+                <input
+                  type="text"
+                  className="w-[80%] bg-transparent text-base font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3 lg:text-lg"
+                  placeholder="Jakarta (JKT)"
+                  value={queryInput.departure}
+                  onChange={(e) => handleQueryInput(e, "departure")}
+                />
               </div>
               {isMobile ? (
                 <div className="flex w-full items-center justify-end gap-3">
                   <div className="w-[85%] border-t-2"></div>
-                  <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" onClick={handleSwapDepartureArrival} />
+                  <Image src="/Return.svg" alt="Return Logo" width={0} height={0} className="w-8 cursor-pointer" onClick={handleSwapDepartureArrival} />
                 </div>
               ) : (
-                <Image src="/Return.svg" alt="Return Logo" width={30} height={1} className="cursor-pointer" onClick={handleSwapDepartureArrival} />
+                <Image src="/Return.svg" alt="Return Logo" width={0} height={0} className="w-8 cursor-pointer" onClick={handleSwapDepartureArrival} />
               )}
               <div className="flex w-full items-center justify-between gap-5 sm:w-[45%]">
                 <div className="flex items-center gap-3 sm:w-auto sm:gap-1">
                   <MdFlightTakeoff size={25} className="text-neutral-3" />
                   <p className="text-sm font-light text-neutral-3">To</p>
                 </div>
-                <input type="text" className="w-[80%] font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3" placeholder="Melbourne (MLB)" value={queryInput.arrival} onChange={(e) => handleQueryInput(e, "arrival")} />
+                <input
+                  type="text"
+                  className="w-[80%] text-base font-medium outline-none sm:w-full sm:border-b-2 sm:pb-3 lg:text-lg"
+                  placeholder="Melbourne (MLB)"
+                  value={queryInput.arrival}
+                  onChange={(e) => handleQueryInput(e, "arrival")}
+                />
               </div>
             </div>
             <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row">
@@ -196,7 +209,7 @@ const FlightFilterCard = () => {
                 </div>
                 <div className="flex w-[85%] flex-col sm:w-full">
                   <p className="text-sm font-light text-neutral-3">Departure</p>
-                  <input type="date" className="w-full border-b-2 pb-3 font-medium outline-none" placeholder="1 Maret 2023" onChange={(e) => handleQueryInput(e, "date")} />
+                  <input type="date" className="w-full border-b-2 pb-3 text-sm font-medium outline-none lg:text-base" placeholder="1 Maret 2023" onChange={(e) => handleQueryInput(e, "date")} />
                 </div>
               </div>
               <div className="flex w-full items-center justify-between sm:w-[45%] sm:gap-5">
@@ -205,9 +218,9 @@ const FlightFilterCard = () => {
                   <p className="text-sm font-light text-neutral-3">To</p>
                 </div>
                 <div className="flex w-[85%] justify-between">
-                  <div className="flex w-[49%] flex-col sm:w-[40%]">
+                  <div className="flex w-[49%] flex-col">
                     <p className="text-sm font-light text-neutral-3">Passengers</p>
-                    <button className="w-full break-all border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick2}>
+                    <button className="w-full break-all border-b-2 pb-3 text-start text-sm font-medium outline-none lg:text-base" onClick={handleClick2}>
                       {queryInput.passengers.adult + queryInput.passengers.child + queryInput.passengers.baby} Passengers
                     </button>
                     <Menu
@@ -221,7 +234,7 @@ const FlightFilterCard = () => {
                         "aria-labelledby": "basic-button",
                       }}
                     >
-                      <div className="w-[25rem]">
+                      <div className="w-full sm:w-[25rem]">
                         <div className="pr-3">
                           <button className="ms-auto flex w-fit justify-end text-end text-2xl font-medium" onClick={() => setAnchorEl2(null)}>
                             X
@@ -238,11 +251,14 @@ const FlightFilterCard = () => {
                                 </div>
                               </div>
                               <div className="flex h-full w-1/2 justify-between">
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "decrease")}>
+                                <button
+                                  className={`${queryInput.passengers.adult === 0 ? "border-neutral-4 text-neutral-4" : "border-primary text-neutral-1"} w-[25%] rounded border p-3 text-xl`}
+                                  onClick={() => handleButtonInput("adult", "decrease")}
+                                >
                                   -
                                 </button>
                                 <input type="number" min={0} value={queryInput.passengers.adult} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "adult")} />
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("adult", "increase")}>
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl text-neutral-1" onClick={() => handleButtonInput("adult", "increase")}>
                                   +
                                 </button>
                               </div>
@@ -256,11 +272,14 @@ const FlightFilterCard = () => {
                                 </div>
                               </div>
                               <div className="flex h-full w-1/2 justify-between">
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "decrease")}>
+                                <button
+                                  className={`${queryInput.passengers.child === 0 ? "border-neutral-4 text-neutral-4" : "border-primary text-neutral-1"} w-[25%] rounded border p-3 text-xl`}
+                                  onClick={() => handleButtonInput("child", "decrease")}
+                                >
                                   -
                                 </button>
                                 <input type="number" min={0} value={queryInput.passengers.child} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "child")} />
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("child", "increase")}>
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl text-neutral-1" onClick={() => handleButtonInput("child", "increase")}>
                                   +
                                 </button>
                               </div>
@@ -274,11 +293,14 @@ const FlightFilterCard = () => {
                                 </div>
                               </div>
                               <div className="flex h-full w-1/2 justify-between">
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "decrease")}>
+                                <button
+                                  className={`${queryInput.passengers.baby === 0 ? "border-neutral-4 text-neutral-4" : "border-primary text-neutral-1"} w-[25%] rounded border p-3 text-xl`}
+                                  onClick={() => handleButtonInput("baby", "decrease")}
+                                >
                                   -
                                 </button>
                                 <input type="number" min={0} value={queryInput.passengers.baby} step={1} className="w-[40%] border text-center outline-none focus:border-primary" onChange={(e) => handleQueryInput(e, "baby")} />
-                                <button className="w-[25%] rounded border border-primary p-3 text-xl font-bold text-neutral-4" onClick={() => handleButtonInput("baby", "increase")}>
+                                <button className="w-[25%] rounded border border-primary p-3 text-xl text-neutral-1" onClick={() => handleButtonInput("baby", "increase")}>
                                   +
                                 </button>
                               </div>
@@ -288,9 +310,9 @@ const FlightFilterCard = () => {
                       </div>
                     </Menu>
                   </div>
-                  <div className="flex w-[49%] flex-col sm:w-[40%]">
+                  <div className="flex w-[49%] flex-col sm:w-[49%]">
                     <p className="text-sm font-light text-neutral-3">Seat Class</p>
-                    <button className="w-full border-b-2 pb-3 text-start font-medium outline-none" onClick={handleClick1}>
+                    <button className="w-full border-b-2 pb-3 text-start text-sm font-medium outline-none lg:text-base" onClick={handleClick1}>
                       {queryInput.class}
                     </button>
                     <Menu
@@ -357,7 +379,7 @@ const FlightFilterCard = () => {
             </div>
           </div>
         </div>
-        <Link href={queryParams} onClick={() => localStorage.setItem("passengers", JSON.stringify(queryInput.passengers))}>
+        <Link href={queryParams} scroll={false} onClick={() => localStorage.setItem("passengers", JSON.stringify(queryInput.passengers))}>
           <button className="w-full bg-primary py-2 text-base font-bold text-neutral-5 hover:bg-primary-hover">Search Flight</button>
         </Link>
       </div>
