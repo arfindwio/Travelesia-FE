@@ -15,6 +15,8 @@ import { showLoadingToast, showSuccessToast, showErrorToast } from "@/helper/toa
 // icons
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
+import { FaCheck } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 interface InputRegister {
   fullName: string;
@@ -165,49 +167,88 @@ const Register = () => {
         <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
           <div className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleRegister() : "")}>
             <h5 className="mb-2 text-2xl font-semibold">Register</h5>
-            <div className="flex w-full flex-col">
+            <div className="relative flex w-full flex-col">
               <label htmlFor="fullname">Name</label>
               <input
                 type="text"
                 id="fullname"
-                className={`${validateRegister.fullName ? "border-alert-red" : ""} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                className={`${validateRegister.fullName ? "border-alert-red" : inputRegister.fullName && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-12 outline-none`}
                 placeholder="Full Name"
                 value={inputRegister.fullName}
                 onChange={(e) => handleInputChange(e, "fullName")}
               />
-              {validateRegister.fullName && <p className="ms-3 text-sm text-alert-red">{validateRegister.fullName}</p>}
+              {validateRegister.fullName ? (
+                <>
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                    <IoClose size={15} className="text-alert-red" />
+                  </div>
+                  <p className="ms-3 text-sm text-alert-red">{validateRegister.fullName}</p>
+                </>
+              ) : (
+                inputRegister.fullName && (
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                    <FaCheck size={15} className="text-neutral-5" />
+                  </div>
+                )
+              )}
             </div>
-            <div className="flex w-full flex-col">
+            <div className="relative flex w-full flex-col">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
-                className={`${validateRegister.email ? "border-alert-red" : ""} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                className={`${validateRegister.email ? "border-alert-red" : inputRegister.email && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-12 outline-none`}
                 placeholder="Example: budi123@gmail.com"
                 value={inputRegister.email}
                 onChange={(e) => handleInputChange(e, "email")}
               />
-              {validateRegister.email && <p className="ms-3 text-sm text-alert-red">{validateRegister.email}</p>}
+              {validateRegister.email ? (
+                <>
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                    <IoClose size={15} className="text-alert-red" />
+                  </div>
+                  <p className="ms-3 text-sm text-alert-red">{validateRegister.email}</p>
+                </>
+              ) : (
+                inputRegister.email && (
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                    <FaCheck size={15} className="text-neutral-5" />
+                  </div>
+                )
+              )}
             </div>
-            <div className="flex w-full flex-col">
+            <div className="relative flex w-full flex-col">
               <label htmlFor="telepon">Phone Number</label>
               <input
                 type="number"
                 id="telepon"
-                className={`${validateRegister.phoneNumber ? "border-alert-red" : ""} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                className={`${validateRegister.phoneNumber ? "border-alert-red" : inputRegister.phoneNumber && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-12 outline-none`}
                 placeholder="+62"
                 value={inputRegister.phoneNumber}
                 onChange={(e) => handleInputChange(e, "phoneNumber")}
               />
-              {validateRegister.phoneNumber && <p className="ms-3 text-sm text-alert-red">{validateRegister.phoneNumber}</p>}
+              {validateRegister.phoneNumber ? (
+                <>
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                    <IoClose size={15} className="text-alert-red" />
+                  </div>
+                  <p className="ms-3 text-sm text-alert-red">{validateRegister.phoneNumber}</p>
+                </>
+              ) : (
+                inputRegister.phoneNumber && (
+                  <div className="absolute right-4 top-9 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                    <FaCheck size={15} className="text-neutral-5" />
+                  </div>
+                )
+              )}
             </div>
-            <div className="flex w-full flex-col">
+            <div className="relative flex w-full flex-col">
               <label htmlFor="password">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  className={`${validateRegister.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 pr-14 outline-none`}
+                  className={`${validateRegister.password ? "border-alert-red" : inputRegister.password && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-24 outline-none`}
                   placeholder="Masukkan password"
                   value={inputRegister.password}
                   onChange={(e) => handleInputChange(e, "password")}
@@ -216,7 +257,7 @@ const Register = () => {
                 {showPassword ? (
                   <FiEye
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateRegister.password || inputRegister.password ? "right-14" : "right-4"} absolute  top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
@@ -224,13 +265,26 @@ const Register = () => {
                 ) : (
                   <FiEyeOff
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateRegister.password || inputRegister.password ? "right-14" : "right-4"} absolute  top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
                   />
                 )}
-                {validateRegister.password && <p className="ms-3 text-sm text-alert-red">{validateRegister.password}</p>}
+                {validateRegister.password ? (
+                  <>
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                      <IoClose size={15} className="text-alert-red" />
+                    </div>
+                    <p className="ms-3 text-sm text-alert-red">{validateRegister.password}</p>
+                  </>
+                ) : (
+                  inputRegister.password && (
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-green bg-alert-green p-1">
+                      <FaCheck size={15} className="text-neutral-5" />
+                    </div>
+                  )
+                )}
               </div>
             </div>
             <button

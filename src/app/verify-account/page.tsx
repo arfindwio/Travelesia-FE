@@ -13,6 +13,8 @@ import { putResendOtpUser } from "@/api/users-endpoints";
 
 // Icons
 import { IoArrowBack } from "react-icons/io5";
+import { FaCheck } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 const VerifyAccount = () => {
   const router = useRouter();
@@ -71,12 +73,25 @@ const VerifyAccount = () => {
             <input
               type="email"
               id="email"
-              className={`${validateEmail ? "border-alert-red" : ""} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+              className={`${validateEmail ? "border-alert-red" : inputEmail && "border-alert-green"}} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
               placeholder="Example: budi123@mail.com"
               value={inputEmail}
               onChange={handleInputChange}
             />
-            {validateEmail && <p className="ms-3 text-sm text-alert-red">{validateEmail}</p>}
+            {validateEmail ? (
+              <>
+                <div className="absolute right-4 top-9 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                  <IoClose size={15} className="text-alert-red" />
+                </div>
+                <p className="ms-3 text-sm text-alert-red">{validateEmail}</p>
+              </>
+            ) : (
+              inputEmail && (
+                <div className="absolute right-4 top-9 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                  <FaCheck size={15} className="text-neutral-5" />
+                </div>
+              )
+            )}
           </div>
           <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={() => handleVerifyAccount()}>
             Submit

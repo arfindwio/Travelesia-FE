@@ -14,6 +14,8 @@ import { showLoadingToast, showSuccessToast, showErrorToast } from "@/helper/toa
 // icons
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
+import { FaCheck } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 interface InputUpdatePassword {
   token: string;
@@ -131,7 +133,7 @@ const UpdatePassword = () => {
                 <input
                   type={showPassword1 ? "text" : "password"}
                   id="password"
-                  className={`${validateUpdatePassword.password ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 pr-14 outline-none`}
+                  className={`${validateUpdatePassword.password ? "border-alert-red" : inputUpdatePassword.password && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-24 outline-none`}
                   placeholder="********"
                   value={inputUpdatePassword.password}
                   onChange={(e) => handleInputChange(e, "password")}
@@ -140,7 +142,7 @@ const UpdatePassword = () => {
                 {showPassword1 ? (
                   <FiEye
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateUpdatePassword.password || !inputUpdatePassword.password ? "right-14" : "right-4"} absolute top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword1(!showPassword1);
                     }}
@@ -148,13 +150,26 @@ const UpdatePassword = () => {
                 ) : (
                   <FiEyeOff
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateUpdatePassword.password || inputUpdatePassword.password ? "right-14" : "right-4"} absolute top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword1(!showPassword1);
                     }}
                   />
                 )}
-                {validateUpdatePassword.password && <p className="ms-3 text-sm text-alert-red">{validateUpdatePassword.password}</p>}
+                {validateUpdatePassword.password ? (
+                  <>
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                      <IoClose size={15} className="text-alert-red" />
+                    </div>
+                    <p className="ms-3 text-sm text-alert-red">{validateUpdatePassword.password}</p>
+                  </>
+                ) : (
+                  inputUpdatePassword.password && (
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-green bg-alert-green p-1">
+                      <FaCheck size={15} className="text-neutral-5" />
+                    </div>
+                  )
+                )}
               </div>
             </div>
             <div className="flex w-full flex-col">
@@ -163,7 +178,7 @@ const UpdatePassword = () => {
                 <input
                   type={showPassword2 ? "text" : "password"}
                   id="passwordConfirmation"
-                  className={`${validateUpdatePassword.passwordConfirmation ? "border-alert-red" : "border-neutral-4"} border-1 w-full rounded-2xl border px-4 py-3 outline-none`}
+                  className={`${validateUpdatePassword.passwordConfirmation ? "border-alert-red" : inputUpdatePassword.passwordConfirmation && "border-alert-green"} border-1 w-full rounded-2xl border px-4 py-3 pr-24 outline-none`}
                   placeholder="********"
                   value={inputUpdatePassword.passwordConfirmation}
                   onChange={(e) => handleInputChange(e, "passwordConfirmation")}
@@ -172,7 +187,7 @@ const UpdatePassword = () => {
                 {showPassword2 ? (
                   <FiEye
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateUpdatePassword.passwordConfirmation || inputUpdatePassword.passwordConfirmation ? "right-14" : "right-4"} absolute  top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword2(!showPassword2);
                     }}
@@ -180,13 +195,26 @@ const UpdatePassword = () => {
                 ) : (
                   <FiEyeOff
                     size={27}
-                    className="absolute right-4 top-3 w-8 cursor-pointer text-slate-400"
+                    className={`${validateUpdatePassword.passwordConfirmation || inputUpdatePassword.passwordConfirmation ? "right-14" : "right-4"} absolute  top-3 w-8 cursor-pointer text-slate-400`}
                     onClick={() => {
                       setShowPassword2(!showPassword2);
                     }}
                   />
                 )}
-                {validateUpdatePassword.passwordConfirmation && <p className="ms-3 text-sm text-alert-red">{validateUpdatePassword.passwordConfirmation}</p>}
+                {validateUpdatePassword.passwordConfirmation ? (
+                  <>
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                      <IoClose size={15} className="text-alert-red" />
+                    </div>
+                    <p className="ms-3 text-sm text-alert-red">{validateUpdatePassword.passwordConfirmation}</p>
+                  </>
+                ) : (
+                  inputUpdatePassword.passwordConfirmation && (
+                    <div className="absolute right-4 top-[13px] rounded-full border-2 border-alert-green bg-alert-green p-1">
+                      <FaCheck size={15} className="text-neutral-5" />
+                    </div>
+                  )
+                )}
               </div>
             </div>
             <button

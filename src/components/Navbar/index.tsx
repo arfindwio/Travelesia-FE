@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 // Components
 import InputSearch from "./InputSearch";
@@ -10,7 +11,18 @@ import UserActionButton from "./UserActionButton";
 import NavbarMobile from "../Mobile/Navbar/NavbarMobile";
 
 const Navbar = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const googleTokenValue = searchParams.get("googleToken");
+    if (googleTokenValue) {
+      localStorage.setItem("tokenUser", googleTokenValue);
+      router.push("/");
+    }
+  }, [router, searchParams]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 639px)");
