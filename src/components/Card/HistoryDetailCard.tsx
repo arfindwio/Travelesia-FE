@@ -1,3 +1,7 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 // Icons
 import { GiLotus } from "react-icons/gi";
 
@@ -53,12 +57,19 @@ interface PassengerData {
 }
 
 const HistoryDetailCard: React.FC<BookingProps> = ({ booking }) => {
+  const router = useRouter();
+
+  const handlePayTicket = () => {
+    localStorage.setItem("bookingCode", booking?.bookingCode || "");
+    router.push(`/payment/${booking?.flight.id}`);
+  };
+
   return (
     <>
       <div className="flex flex-col gap-1">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold">Detail Booking</h1>
-          <p className={`${booking?.status === "Unpaid" ? "bg-alert-red" : "bg-alert-green"} w-fit rounded-full px-4 py-1 text-sm text-neutral-5`}>{booking?.status}</p>
+          <p className={`${booking?.status === "Unpaid" ? "bg-alert-red" : "bg-alert-green"} w-fit rounded-full px-4 py-1 text-sm text-neutral-5 print:text-lg print:font-bold print:text-green-200`}>{booking?.status}</p>
         </div>
         <h1 className="text-lg">
           Booking Code: <span className="font-bold text-primary">{booking?.bookingCode}</span>
@@ -74,7 +85,7 @@ const HistoryDetailCard: React.FC<BookingProps> = ({ booking }) => {
           {booking?.flight.departureTerminal.airport.airportName} - {booking?.flight.departureTerminal.terminalName}
         </p>
       </div>
-      <div className="px-4">
+      <div className="sm:px-4 print:px-0">
         <div className="flex w-full items-center gap-2 border-y-2 border-neutral-4 py-2">
           <GiLotus size={25} className="text-alert-yellow" />
           <div className="flex flex-col gap-3">
@@ -88,10 +99,10 @@ const HistoryDetailCard: React.FC<BookingProps> = ({ booking }) => {
               <h5 className="text-sm font-bold">Information:</h5>
               {booking?.passenger.map((data, index) => (
                 <div key={data.id}>
-                  <p className="text-sm font-medium">
+                  <p className="text-sm font-medium text-primary-hover">
                     Passenger {index + 1}: {data.title} {data.fullName}
                   </p>
-                  <p className="text-sm font-normal">ID: {data.id}</p>
+                  <p className="text-sm font-normal text-primary-hover">ID: {data.id}</p>
                 </div>
               ))}
             </div>
@@ -106,7 +117,7 @@ const HistoryDetailCard: React.FC<BookingProps> = ({ booking }) => {
         <p className="text-sm font-normal">{`${booking?.flight.arrivalTime.split(" ")[1]} ${booking?.flight.arrivalTime.split(" ")[2]} ${booking?.flight.arrivalTime.split(" ")[3]}`}</p>
         <p className="text-sm font-medium">{booking?.flight.arrivalTerminal.airport.airportName}</p>
       </div>
-      <div className="px-4">
+      <div className="sm:px-4 print:px-0">
         <div className="flex flex-col gap-2 border-y-2 border-neutral-4 py-2">
           <h5 className="text-sm font-bold">Pricing Details</h5>
           {booking?.adult !== 0 && (
@@ -137,7 +148,15 @@ const HistoryDetailCard: React.FC<BookingProps> = ({ booking }) => {
           <h1 className="text-lg font-bold text-primary">IDR {booking && ((booking?.adult * booking?.flight.price + booking?.child * booking?.flight.price + booking?.baby * booking?.flight.price) * 1.11).toLocaleString("id-ID")}</h1>
         </div>
       </div>
-      <button className="mt-6 rounded-xl bg-primary py-4 font-normal text-neutral-5 hover:bg-primary-hover">Print Ticket</button>
+      {booking?.status === "Unpaid" ? (
+        <button className="mt-6 rounded-xl bg-alert-green py-4 font-normal text-neutral-5 hover:bg-green-600" onClick={() => handlePayTicket()}>
+          Pay Ticket
+        </button>
+      ) : (
+        <button className="mt-6 rounded-xl bg-primary py-4 font-normal text-neutral-5 hover:bg-primary-hover print:hidden" onClick={() => window.print()}>
+          Print Ticket
+        </button>
+      )}
     </>
   );
 };

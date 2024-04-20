@@ -40,6 +40,7 @@ interface PassengerInput {
 }
 
 const PassengersForm: React.FC<PassengersProps> = ({ index, type, createBookingData, completePassengersInput, completeCreatePassengers }) => {
+  const [isToggled, setIsToggled] = useState(false);
   const [passengersInput, setPassengersInput] = useState<PassengerInput>({
     title: "Mr.",
     fullName: "",
@@ -58,6 +59,7 @@ const PassengersForm: React.FC<PassengersProps> = ({ index, type, createBookingD
 
       const createPassenger = await postCreatePassenger({
         ...passengersInput,
+        familyName: isToggled ? passengersInput.familyName : "",
         bookingId: Number(createBookingData?.id),
       });
 
@@ -119,6 +121,29 @@ const PassengersForm: React.FC<PassengersProps> = ({ index, type, createBookingD
           value={passengersInput.fullName}
           onChange={(e) => handlePassengersInput(e, "fullName")}
         />
+      </div>
+      <div className="flex w-full flex-col gap-2 px-4 ">
+        <div className="flex items-center justify-between sm:pr-2">
+          <p className="w-[70%] text-base font-normal text-neutral-1">Have Family Name?</p>
+          <button className={`h-6 w-12 rounded-full ${isToggled ? "justify-end bg-primary" : "justify-start bg-neutral-4"}`} onClick={() => setIsToggled(!isToggled)}>
+            <span className={`inline-block h-5 w-5 translate-y-[10%] transform rounded-full bg-white ${isToggled ? "translate-x-[50%]" : "-translate-x-[50%]"}`} />
+          </button>
+        </div>
+        {isToggled && (
+          <div className="flex flex-col">
+            <label htmlFor="familyName" className="w-fit text-sm font-bold text-primary">
+              Family Name
+            </label>
+            <input
+              type="text"
+              id="familyName"
+              placeholder="Cahyono"
+              className="rounded border-2 border-neutral-4 px-2 py-1 text-base font-normal outline-none focus:border-primary"
+              value={passengersInput.familyName}
+              onChange={(e) => handlePassengersInput(e, "familyName")}
+            />
+          </div>
+        )}
       </div>
       <div className="flex flex-col px-4">
         <label htmlFor="birth" className="w-fit text-sm font-bold text-primary">

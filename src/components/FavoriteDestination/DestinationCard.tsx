@@ -25,6 +25,14 @@ interface SeatData {
   isBooked: boolean;
 }
 
+interface PromotionData {
+  discount: number;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface FlightData {
   id: number;
   flightCode: string;
@@ -35,8 +43,9 @@ interface FlightData {
   arrivalTime: string;
   duration: number;
   createdAt: string;
+  updatedAt: string;
   airline: AirlineData;
-  promotion: string;
+  promotion: PromotionData;
   departureTerminal: TerminalData;
   arrivalTerminal: TerminalData;
   seat: SeatData[];
