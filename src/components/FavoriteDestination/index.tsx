@@ -37,6 +37,14 @@ interface SeatData {
   isBooked: boolean;
 }
 
+interface PromotionData {
+  discount: number;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface FlightData {
   id: number;
   flightCode: string;
@@ -47,8 +55,9 @@ interface FlightData {
   arrivalTime: string;
   duration: number;
   createdAt: string;
+  updatedAt: string;
   airline: AirlineData;
-  promotion: string;
+  promotion: PromotionData;
   departureTerminal: TerminalData;
   arrivalTerminal: TerminalData;
   seat: SeatData[];
@@ -94,16 +103,20 @@ const FavoriteDestination = () => {
 
   return (
     <>
-      <h1 className="text-lg font-bold sm:text-xl">Favorite Destination</h1>
-      <DestinationFilterButton />
-      <Swiper slidesPerView={isMobile ? 3 : 5} centeredSlides={false} spaceBetween={10} grabCursor={true} className="flex w-full overflow-x-auto">
-        {flights &&
-          flights.map((flight) => (
-            <SwiperSlide key={flight.id} className="pb-3">
-              <DestinationCard flight={flight} />
-            </SwiperSlide>
-          ))}
-      </Swiper>
+      {flights?.length && (
+        <>
+          <h1 className="text-lg font-bold sm:text-xl">Favorite Destination</h1>
+          <DestinationFilterButton />
+          <Swiper slidesPerView={isMobile ? 3 : 5} centeredSlides={false} spaceBetween={10} grabCursor={true} className="flex w-full overflow-x-auto">
+            {flights &&
+              flights.map((flight) => (
+                <SwiperSlide key={flight.id} className="pb-3">
+                  <DestinationCard flight={flight} />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </>
+      )}
     </>
   );
 };

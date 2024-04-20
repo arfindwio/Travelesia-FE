@@ -98,8 +98,8 @@ const Seat: React.FC<SeatProps> = ({ id, countPassengers, createBookingData, com
   return (
     <div className="flex flex-col gap-4 rounded border-2 border-neutral-4 px-5 py-6">
       <h1 className="text-[20px] font-bold">Customer Data</h1>
-      <h3 className="rounded-sm bg-alert-green py-2 text-center text-sm font-medium text-neutral-5">Economy - {seatData?.length} Seats Available</h3>
-      <div className="items-centerjustify-center mx-auto flex w-[55%] flex-col">
+      <h3 className="rounded-sm bg-alert-green px-2 py-2 text-center text-sm font-medium text-neutral-5 sm:px-0">Economy - {seatData?.length} Seats Available</h3>
+      <div className="items-centerjustify-center mx-auto flex w-full flex-col sm:w-[70%] md:w-[90%] lg:w-[70%] xl:w-[55%]">
         <div className="mx-auto flex w-full items-center justify-evenly text-center text-neutral-4">
           <div className="flex w-[14%] justify-center">
             <p className="h-10 w-10">A</p>
@@ -127,7 +127,7 @@ const Seat: React.FC<SeatProps> = ({ id, countPassengers, createBookingData, com
           {seatData?.map((seat, index) => (
             <>
               <div key={seat.id} className="mb-3 flex w-[14%] justify-center" onClick={() => (!seat.isBooked ? toggleSeatSelection(seat.id) : null)}>
-                <p className={`${selectedSeats.includes(seat.id) && "bg-primary"} ${seat.isBooked ? "bg-neutral-4" : "bg-alert-green"} flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-neutral-5 text-opacity-70`}>
+                <p className={`${selectedSeats.includes(seat.id) && "bg-primary"} ${seat.isBooked ? "bg-neutral-4 text-opacity-70" : "bg-alert-green"} flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-neutral-5`}>
                   {seat.isBooked && "X"}
                   {selectedSeats.includes(seat.id) && `P${passengerNumber++}`}
                 </p>
