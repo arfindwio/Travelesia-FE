@@ -33,27 +33,22 @@ interface AirlineData {
   cabinBaggage: number;
 }
 
-interface SeatData {
-  id: number;
-  seatNumber: string;
-  isBooked: boolean;
+interface PromotionData {
+  discount: number;
 }
-
 interface FlightData {
   id: number;
   flightCode: string;
-  flightImg: string;
   seatClass: string;
   price: number;
   departureTime: string;
   arrivalTime: string;
   duration: number;
   createdAt: string;
+  promotion: PromotionData;
   airline: AirlineData;
-  promotion: string;
   departureTerminal: TerminalData;
   arrivalTerminal: TerminalData;
-  seat: SeatData[];
 }
 
 const FlightDetail: React.FC<FlightProps> = ({ id, passengers, flightData }) => {

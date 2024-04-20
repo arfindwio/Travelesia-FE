@@ -39,22 +39,16 @@ const Topbar = () => {
   }, []);
 
   return (
-    <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-6 pb-4 pt-5 sm:px-10 sm:pt-24 sm:shadow-md lg:px-20">
+    <div className="flex w-full flex-col gap-4 border-b bg-neutral-5 px-6 pb-4 pt-5 sm:px-10 sm:pt-24 sm:shadow-md lg:px-20 print:hidden">
       <h1 className="text-2xl font-bold sm:text-xl">{topbarName}</h1>
       {!isMobile && (
         <div className="flex items-center justify-between gap-4">
-          <div className={`${pathName === "/account/profile" || pathName === "/account/setting" ? "w-full" : "w-[90%]"} flex items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5`}>
+          <div className={`${pathName === "/account/profile" || pathName === "/account/setting" ? "w-full" : "w-full"} flex items-center rounded-xl bg-primary-3 px-3 py-4 text-neutral-5`}>
             <Link href="/" scroll={false} className="flex w-fit">
               <IoArrowBack size={25} />
               <p className="pl-2 text-base font-bold">Homepage</p>
             </Link>
           </div>
-          {pathName === "/history" || pathName === "/notification" ? (
-            <>
-              <FilterTopbarButton />
-              <SearchTopbarButton />
-            </>
-          ) : null}
         </div>
       )}
     </div>
