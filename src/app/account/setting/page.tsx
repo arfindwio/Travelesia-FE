@@ -18,6 +18,8 @@ import SidebarAccount from "@/components/Sidebar/SidebarAccount";
 // icons
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
+import { FaCheck } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 interface InputChangePassword {
   oldPassword: string;
@@ -177,18 +179,39 @@ const Setting = () => {
                   <input
                     type={showNewPassword ? "text" : "password"}
                     id="newPassword"
-                    className={`${validateChangePassword.newPassword ? "border-alert-red" : "border-neutral-4 focus:border-primary-3"} rounded-2xl border-2 px-4 py-2 pr-14 outline-none`}
+                    className={`${validateChangePassword.newPassword ? "border-alert-red" : inputChangePassword.newPassword && "border-alert-green focus:border-primary-3"} rounded-2xl border-2 px-4 py-2 pr-24 outline-none`}
                     placeholder="********"
                     value={inputChangePassword.newPassword}
                     onChange={(e) => handleInputChange(e, "newPassword")}
                     autoComplete="off"
                   />
                   {showNewPassword ? (
-                    <FiEye size={27} className="absolute right-4 top-2 w-8 cursor-pointer text-slate-400" onClick={() => setShowNewPassword(!showNewPassword)} />
+                    <FiEye
+                      size={27}
+                      className={`${validateChangePassword.newPassword || inputChangePassword.newPassword ? "right-14" : "right-4"} absolute top-2 w-8 cursor-pointer text-slate-400`}
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    />
                   ) : (
-                    <FiEyeOff size={27} className="absolute right-4 top-2 w-8 cursor-pointer text-slate-400" onClick={() => setShowNewPassword(!showNewPassword)} />
+                    <FiEyeOff
+                      size={27}
+                      className={`${validateChangePassword.newPassword || inputChangePassword.newPassword ? "right-14" : "right-4"} absolute top-2 w-8 cursor-pointer text-slate-400`}
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    />
                   )}
-                  {validateChangePassword.newPassword && <p className="px-3 text-sm text-alert-red">{validateChangePassword.newPassword}</p>}
+                  {validateChangePassword.newPassword ? (
+                    <>
+                      <div className="absolute right-4 top-2 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                        <IoClose size={15} className="text-alert-red" />
+                      </div>
+                      <p className="ms-3 text-sm text-alert-red">{validateChangePassword.newPassword}</p>
+                    </>
+                  ) : (
+                    inputChangePassword.newPassword && (
+                      <div className="absolute right-4 top-2 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                        <FaCheck size={15} className="text-neutral-5" />
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
               <div className="flex w-full flex-col">
@@ -197,18 +220,41 @@ const Setting = () => {
                   <input
                     type={showConfirmNewPassword ? "text" : "password"}
                     id="confirmNewPassword"
-                    className={`${validateChangePassword.newPasswordConfirmation ? "border-alert-red" : "border-neutral-4 focus:border-primary-3"} rounded-2xl border-2  px-4 py-2 pr-14 outline-none`}
+                    className={`${
+                      validateChangePassword.newPasswordConfirmation ? "border-alert-red" : inputChangePassword.newPasswordConfirmation && "border-alert-green focus:border-primary-3"
+                    } rounded-2xl border-2 px-4 py-2 pr-24 outline-none`}
                     placeholder="********"
                     value={inputChangePassword.newPasswordConfirmation}
                     onChange={(e) => handleInputChange(e, "newPasswordConfirmation")}
                     autoComplete="off"
                   />
                   {showConfirmNewPassword ? (
-                    <FiEye size={27} className="absolute right-4 top-2 w-8 cursor-pointer text-slate-400" onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)} />
+                    <FiEye
+                      size={27}
+                      className={`${validateChangePassword.newPasswordConfirmation || inputChangePassword.newPasswordConfirmation ? "right-14" : "right-4"} absolute top-2 w-8 cursor-pointer text-slate-400`}
+                      onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                    />
                   ) : (
-                    <FiEyeOff size={27} className="absolute right-4 top-2 w-8 cursor-pointer text-slate-400" onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)} />
+                    <FiEyeOff
+                      size={27}
+                      className={`${validateChangePassword.newPasswordConfirmation || inputChangePassword.newPasswordConfirmation ? "right-14" : "right-4"} absolute top-2 w-8 cursor-pointer text-slate-400`}
+                      onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                    />
                   )}
-                  {validateChangePassword.newPasswordConfirmation && <p className="px-3 text-sm text-alert-red">{validateChangePassword.newPasswordConfirmation}</p>}
+                  {validateChangePassword.newPasswordConfirmation ? (
+                    <>
+                      <div className="absolute right-4 top-2 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
+                        <IoClose size={15} className="text-alert-red" />
+                      </div>
+                      <p className="ms-3 text-sm text-alert-red">{validateChangePassword.newPasswordConfirmation}</p>
+                    </>
+                  ) : (
+                    inputChangePassword.newPasswordConfirmation && (
+                      <div className="absolute right-4 top-2 rounded-full border-2 border-alert-green bg-alert-green p-1">
+                        <FaCheck size={15} className="text-neutral-5" />
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
               <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={() => handleChangePassword()}>
