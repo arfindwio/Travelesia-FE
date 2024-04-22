@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, KeyboardEvent, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -53,35 +53,43 @@ const Otp: React.FC = () => {
     return maskedEmail;
   };
 
-  const handleVerifyOtp = async () => {
-    const loadingToastId = showLoadingToast("Loading...");
-    let verifyOtp: boolean = false;
+  const handleVerifyOtp = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    if (valueEmail && finalOtp) verifyOtp = await putVerifyOtpUser({ email: valueEmail, otp: finalOtp });
+      const loadingToastId = showLoadingToast("Loading...");
+      let verifyOtp: boolean = false;
 
-    toast.dismiss(loadingToastId);
+      if (valueEmail && finalOtp) verifyOtp = await putVerifyOtpUser({ email: valueEmail, otp: finalOtp });
 
-    if (!verifyOtp) showErrorToast("Verify OTP Failed");
-    if (verifyOtp) {
-      showSuccessToast("verify OTP successful");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      toast.dismiss(loadingToastId);
+
+      if (!verifyOtp) showErrorToast("Verify OTP Failed");
+      if (verifyOtp) {
+        showSuccessToast("verify OTP successful");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      }
     }
   };
 
-  const handleResendOtp = async () => {
-    const loadingToastId = showLoadingToast("Loading...");
-    let resendOtp: boolean = false;
+  const handleResendOtp = async (e: MouseEvent<HTMLButtonElement>) => {
+    if (e.type === "click") {
+      e.preventDefault();
 
-    if (valueEmail) resendOtp = await putResendOtpUser({ email: valueEmail });
+      const loadingToastId = showLoadingToast("Loading...");
+      let resendOtp: boolean = false;
 
-    toast.dismiss(loadingToastId);
+      if (valueEmail) resendOtp = await putResendOtpUser({ email: valueEmail });
 
-    if (!resendOtp) showErrorToast("Resend OTP Failed");
-    if (resendOtp) {
-      showSuccessToast("Resend OTP successful");
-      setCountdown(60);
+      toast.dismiss(loadingToastId);
+
+      if (!resendOtp) showErrorToast("Resend OTP Failed");
+      if (resendOtp) {
+        showSuccessToast("Resend OTP successful");
+        setCountdown(60);
+      }
     }
   };
 
@@ -96,7 +104,7 @@ const Otp: React.FC = () => {
         <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
       </div>
       <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
-        <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleVerifyOtp() : "")}>
+        <form className="flex w-full flex-col gap-2" onKeyDown={handleVerifyOtp}>
           <button className="relative flex w-fit items-center" onClick={() => router.back()}>
             <IoArrowBack size={25} className="left-0 top-2" />
             <p className="ms-2 text-lg">Back</p>
@@ -110,25 +118,15 @@ const Otp: React.FC = () => {
             {countdown > 0 ? (
               <p className="text-sm">Resend OTP in {countdown} seconds</p>
             ) : (
-              <button
-                className="mx-auto w-fit text-base font-semibold text-primary-3"
-                onClick={() => {
-                  handleResendOtp();
-                }}
-              >
+              <button className="mx-auto w-fit text-base font-semibold text-primary-3" onClick={handleResendOtp}>
                 Resend OTP
               </button>
             )}
           </div>
-          <button
-            className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover"
-            onClick={() => {
-              handleVerifyOtp();
-            }}
-          >
+          <button className="mt-10 w-full rounded-2xl bg-primary py-2 text-neutral-5 hover:bg-primary-hover" onClick={handleVerifyOtp}>
             Send
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
