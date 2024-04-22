@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, KeyboardEvent, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -34,20 +34,24 @@ const ForgetPassword = () => {
     }
   };
 
-  const handleForgetPassword = async () => {
-    if (validateEmail) return showErrorToast(validateEmail);
-    if (!inputEmail) return showErrorToast("All fields are required");
+  const handleForgetPassword = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const loadingToastId = showLoadingToast("Loading...");
+      if (validateEmail) return showErrorToast(validateEmail);
+      if (!inputEmail) return showErrorToast("All fields are required");
 
-    const forgetPassword = await postForgetPasswordUser({ email: inputEmail });
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const forgetPassword = await postForgetPasswordUser({ email: inputEmail });
 
-    if (!forgetPassword) showErrorToast("Send Email Failed");
+      toast.dismiss(loadingToastId);
 
-    if (forgetPassword) {
-      showSuccessToast("Email sent successfully!");
+      if (!forgetPassword) showErrorToast("Send Email Failed");
+
+      if (forgetPassword) {
+        showSuccessToast("Email sent successfully!");
+      }
     }
   };
 
@@ -58,7 +62,7 @@ const ForgetPassword = () => {
         <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
       </div>
       <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
-        <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleForgetPassword() : "")}>
+        <form className="flex w-full flex-col gap-2" onKeyDown={handleForgetPassword}>
           <button className="relative flex w-fit items-center" onClick={() => router.back()}>
             <IoArrowBack size={25} className="left-0 top-2" />
             <p className="ms-2 text-lg">Back</p>
@@ -89,10 +93,10 @@ const ForgetPassword = () => {
               )
             )}
           </div>
-          <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={() => handleForgetPassword()}>
+          <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={handleForgetPassword}>
             Submit
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, KeyboardEvent, MouseEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -96,24 +96,28 @@ const UpdatePassword = () => {
     }
   };
 
-  const handleUpdatePassword = async () => {
-    if (validateUpdatePassword.password) return showErrorToast(validateUpdatePassword.password);
-    if (validateUpdatePassword.passwordConfirmation) return showErrorToast(validateUpdatePassword.passwordConfirmation);
-    if (!inputUpdatePassword.password || !inputUpdatePassword.passwordConfirmation) return showErrorToast("All fields are required");
+  const handleUpdatePassword = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const loadingToastId = showLoadingToast("Loading...");
+      if (validateUpdatePassword.password) return showErrorToast(validateUpdatePassword.password);
+      if (validateUpdatePassword.passwordConfirmation) return showErrorToast(validateUpdatePassword.passwordConfirmation);
+      if (!inputUpdatePassword.password || !inputUpdatePassword.passwordConfirmation) return showErrorToast("All fields are required");
 
-    const updatePassword = await putUpdatePasswordUser(inputUpdatePassword);
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const updatePassword = await putUpdatePasswordUser(inputUpdatePassword);
 
-    if (!updatePassword) showErrorToast("Update Password Failed");
+      toast.dismiss(loadingToastId);
 
-    if (updatePassword) {
-      showSuccessToast("Update Password Successful");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      if (!updatePassword) showErrorToast("Update Password Failed");
+
+      if (updatePassword) {
+        showSuccessToast("Update Password Successful");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      }
     }
   };
 
@@ -125,7 +129,7 @@ const UpdatePassword = () => {
           <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
         </div>
         <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
-          <div className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleUpdatePassword() : "")}>
+          <form className="flex w-full flex-col gap-4" onKeyDown={handleUpdatePassword}>
             <h5 className="mb-2 text-2xl font-semibold">Update Password</h5>
             <div className="flex w-full flex-col">
               <label htmlFor="password">New Password</label>
@@ -217,15 +221,10 @@ const UpdatePassword = () => {
                 )}
               </div>
             </div>
-            <button
-              className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover"
-              onClick={() => {
-                handleUpdatePassword();
-              }}
-            >
+            <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={handleUpdatePassword}>
               Update Password
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </>

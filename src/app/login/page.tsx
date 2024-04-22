@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, KeyboardEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
 
 // Helper
@@ -38,20 +38,24 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = async () => {
-    const loadingToastId = showLoadingToast("Loading...");
+  const handleLogin = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const login = await postLoginUser(inputLogin);
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const login = await postLoginUser(inputLogin);
 
-    if (!login) showErrorToast("Login Failed");
+      toast.dismiss(loadingToastId);
 
-    if (login) {
-      showSuccessToast("Login Successful");
-      setTimeout(() => {
-        router.back();
-      }, 1000);
+      if (!login) showErrorToast("Login Failed");
+
+      if (login) {
+        showSuccessToast("Login Successful");
+        setTimeout(() => {
+          router.back();
+        }, 1000);
+      }
     }
   };
 
@@ -64,7 +68,7 @@ const Login = () => {
         </div>
         <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
           <div className="flex w-full flex-col gap-4">
-            <form className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleLogin() : "")}>
+            <form className="flex w-full flex-col gap-4" onKeyDown={handleLogin}>
               <h5 className="mb-2 text-2xl font-semibold">Login</h5>
               <div className="flex w-full flex-col">
                 <label htmlFor="emailOrPhoneNumber">Email / Phone Number</label>
@@ -117,12 +121,7 @@ const Login = () => {
                   )}
                 </div>
               </div>
-              <button
-                className="mt-3 w-full rounded-2xl bg-primary py-4 text-base font-medium text-neutral-5 hover:bg-primary-hover"
-                onClick={() => {
-                  handleLogin();
-                }}
-              >
+              <button className="mt-3 w-full rounded-2xl bg-primary py-4 text-base font-medium text-neutral-5 hover:bg-primary-hover" onClick={handleLogin}>
                 Login
               </button>
             </form>

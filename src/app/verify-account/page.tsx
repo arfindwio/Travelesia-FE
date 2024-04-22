@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, KeyboardEvent, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -34,24 +34,28 @@ const VerifyAccount = () => {
     }
   };
 
-  const handleVerifyAccount = async () => {
-    if (validateEmail) return showErrorToast(validateEmail);
-    if (!inputEmail) return showErrorToast("All fields are required");
+  const handleVerifyAccount = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const loadingToastId = showLoadingToast("Loading...");
+      if (validateEmail) return showErrorToast(validateEmail);
+      if (!inputEmail) return showErrorToast("All fields are required");
 
-    const verifyOtp = await putResendOtpUser({ email: inputEmail });
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const verifyOtp = await putResendOtpUser({ email: inputEmail });
 
-    if (!verifyOtp) showErrorToast("Send OTP Failed");
+      toast.dismiss(loadingToastId);
 
-    if (verifyOtp) {
-      showSuccessToast("Email sent successfully!");
-      setTimeout(() => {
-        localStorage.setItem("email", inputEmail);
-        router.push("/otp");
-      }, 1000);
+      if (!verifyOtp) showErrorToast("Send OTP Failed");
+
+      if (verifyOtp) {
+        showSuccessToast("Email sent successfully!");
+        setTimeout(() => {
+          localStorage.setItem("email", inputEmail);
+          router.push("/otp");
+        }, 1000);
+      }
     }
   };
 
@@ -62,13 +66,13 @@ const VerifyAccount = () => {
         <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
       </div>
       <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
-        <div className="flex w-full flex-col gap-2" onKeyDown={(e) => (e.key === "Enter" ? handleVerifyAccount() : "")}>
+        <form className="flex w-full flex-col gap-2" onKeyDown={handleVerifyAccount}>
           <button className="relative flex w-fit items-center" onClick={() => router.back()}>
             <IoArrowBack size={25} className="left-0 top-2" />
             <p className="ms-2 text-lg">Back</p>
           </button>
           <h1 className="mb-4 text-2xl font-bold">Verify Account</h1>
-          <div className="flex w-full flex-col">
+          <div className="relative flex w-full flex-col">
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -93,10 +97,10 @@ const VerifyAccount = () => {
               )
             )}
           </div>
-          <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={() => handleVerifyAccount()}>
+          <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={handleVerifyAccount}>
             Submit
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

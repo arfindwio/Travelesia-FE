@@ -99,13 +99,23 @@ const FlightFilterCard = () => {
         [field]: formatDate(value),
       }));
     } else if (field === "adult" || field === "child" || field === "baby") {
-      setQueryInput((prevQueryInput) => ({
-        ...prevQueryInput,
-        passengers: {
-          ...prevQueryInput.passengers,
-          [field]: parseInt(value),
-        },
-      }));
+      if (parseInt(value) < 0) {
+        setQueryInput((prevQueryInput) => ({
+          ...prevQueryInput,
+          passengers: {
+            ...prevQueryInput.passengers,
+            [field]: 0,
+          },
+        }));
+      } else {
+        setQueryInput((prevQueryInput) => ({
+          ...prevQueryInput,
+          passengers: {
+            ...prevQueryInput.passengers,
+            [field]: parseInt(value),
+          },
+        }));
+      }
     } else {
       setQueryInput((prevQueryInput) => ({
         ...prevQueryInput,

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, KeyboardEvent, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -133,27 +133,31 @@ const Register = () => {
     }
   };
 
-  const handleRegister = async () => {
-    if (validateRegister.fullName) return showErrorToast(validateRegister.fullName);
-    if (validateRegister.email) return showErrorToast(validateRegister.email);
-    if (validateRegister.phoneNumber) return showErrorToast(validateRegister.phoneNumber);
-    if (validateRegister.password) return showErrorToast(validateRegister.password);
-    if (!inputRegister.fullName || !inputRegister.email || !inputRegister.phoneNumber || !inputRegister.password) return showErrorToast("All fields are required");
+  const handleRegister = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const loadingToastId = showLoadingToast("Loading...");
+      if (validateRegister.fullName) return showErrorToast(validateRegister.fullName);
+      if (validateRegister.email) return showErrorToast(validateRegister.email);
+      if (validateRegister.phoneNumber) return showErrorToast(validateRegister.phoneNumber);
+      if (validateRegister.password) return showErrorToast(validateRegister.password);
+      if (!inputRegister.fullName || !inputRegister.email || !inputRegister.phoneNumber || !inputRegister.password) return showErrorToast("All fields are required");
 
-    const register = await postRegisterUser(inputRegister);
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const register = await postRegisterUser(inputRegister);
 
-    if (!register) showErrorToast("Registration Failed");
+      toast.dismiss(loadingToastId);
 
-    if (register) {
-      showSuccessToast("Verification link has been sent!");
-      setTimeout(() => {
-        localStorage.setItem("email", inputRegister.email);
-        router.push("/otp");
-      }, 1000);
+      if (!register) showErrorToast("Registration Failed");
+
+      if (register) {
+        showSuccessToast("Verification link has been sent!");
+        setTimeout(() => {
+          localStorage.setItem("email", inputRegister.email);
+          router.push("/otp");
+        }, 1000);
+      }
     }
   };
 
@@ -165,7 +169,7 @@ const Register = () => {
           <h1 className="font-sans text-neutral-5 md:text-5xl lg:text-6xl">Travelesia</h1>
         </div>
         <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
-          <div className="flex w-full flex-col gap-4" onKeyDown={(e) => (e.key === "Enter" ? handleRegister() : "")}>
+          <form className="flex w-full flex-col gap-4" onKeyDown={handleRegister}>
             <h5 className="mb-2 text-2xl font-semibold">Register</h5>
             <div className="relative flex w-full flex-col">
               <label htmlFor="fullname">Name</label>
@@ -287,12 +291,7 @@ const Register = () => {
                 )}
               </div>
             </div>
-            <button
-              className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover"
-              onClick={() => {
-                handleRegister();
-              }}
-            >
+            <button className="mt-3 w-full rounded-2xl bg-primary py-3 text-sm text-neutral-5 hover:bg-primary-hover" onClick={handleRegister}>
               Register
             </button>
             <p className="mt-1 text-center text-sm">
@@ -301,7 +300,7 @@ const Register = () => {
                 Login here
               </Link>
             </p>
-          </div>
+          </form>
         </div>
       </div>
     </>
