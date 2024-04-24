@@ -81,7 +81,7 @@ const History = () => {
       const bookings = await getAllBookingsUser();
       if (bookings) {
         setBookingData(bookings);
-        setBookingId(bookings[0].id);
+        if (bookings.length) setBookingId(bookings[0].id);
       }
     };
     const fetchDataWithQuery = async () => {

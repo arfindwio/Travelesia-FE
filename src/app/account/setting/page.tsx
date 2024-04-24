@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, KeyboardEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -118,26 +118,30 @@ const Setting = () => {
     }
   };
 
-  const handleChangePassword = async () => {
-    if (validateChangePassword.newPassword) return showErrorToast(validateChangePassword.newPassword);
-    if (validateChangePassword.newPasswordConfirmation) return showErrorToast(validateChangePassword.newPasswordConfirmation);
-    if (!inputChangePassword.oldPassword || !inputChangePassword.newPassword || !inputChangePassword.newPasswordConfirmation) return showErrorToast("All fields are required");
+  const handleChangePassword = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const loadingToastId = showLoadingToast("Loading...");
+      if (validateChangePassword.newPassword) return showErrorToast(validateChangePassword.newPassword);
+      if (validateChangePassword.newPasswordConfirmation) return showErrorToast(validateChangePassword.newPasswordConfirmation);
+      if (!inputChangePassword.oldPassword || !inputChangePassword.newPassword || !inputChangePassword.newPasswordConfirmation) return showErrorToast("All fields are required");
 
-    const changePassword = await putChangePasswordUser(inputChangePassword);
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const changePassword = await putChangePasswordUser(inputChangePassword);
 
-    if (!changePassword) showErrorToast("Change Password Failed");
+      toast.dismiss(loadingToastId);
 
-    if (changePassword) {
-      showSuccessToast("Change Password Successful");
-      setInputChangePassword({
-        oldPassword: "",
-        newPassword: "",
-        newPasswordConfirmation: "",
-      });
+      if (!changePassword) showErrorToast("Change Password Failed");
+
+      if (changePassword) {
+        showSuccessToast("Change Password Successful");
+        setInputChangePassword({
+          oldPassword: "",
+          newPassword: "",
+          newPasswordConfirmation: "",
+        });
+      }
     }
   };
   return (
@@ -152,7 +156,7 @@ const Setting = () => {
             </div>
           )}
           <div className="w-full sm:w-[55%]">
-            <div className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={(e) => (e.key === "Enter" ? handleChangePassword() : "")}>
+            <form className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={handleChangePassword}>
               <h4 className="mb-3 text-center text-2xl font-bold">Change Password</h4>
               <div className="flex w-full flex-col">
                 <label htmlFor="oldPassword">Enter Old Password</label>
@@ -257,10 +261,10 @@ const Setting = () => {
                   )}
                 </div>
               </div>
-              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={() => handleChangePassword()}>
+              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={handleChangePassword}>
                 Change Password
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

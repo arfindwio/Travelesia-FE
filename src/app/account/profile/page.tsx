@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, KeyboardEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
 
 // Api
@@ -106,17 +106,21 @@ const Profile = () => {
     }
   };
 
-  const handleUserProfile = async () => {
-    if (!inputUserProfile.fullName || !inputUserProfile.phoneNumber || !inputUserProfile.email) return showErrorToast("Please fill in all required fields: Full Name, Phone Number, and Email");
-    const loadingToastId = showLoadingToast("Loading...");
+  const handleUserProfile = async (e: KeyboardEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    if ((e as KeyboardEvent<HTMLFormElement>).key === "Enter" || e.type === "click") {
+      e.preventDefault();
 
-    const userProfile = await putUpdateUserProfile(inputUserProfile);
+      if (!inputUserProfile.fullName || !inputUserProfile.phoneNumber || !inputUserProfile.email) return showErrorToast("Please fill in all required fields: Full Name, Phone Number, and Email");
+      const loadingToastId = showLoadingToast("Loading...");
 
-    toast.dismiss(loadingToastId);
+      const userProfile = await putUpdateUserProfile(inputUserProfile);
 
-    if (!userProfile) showErrorToast("User profile failed to update");
+      toast.dismiss(loadingToastId);
 
-    if (userProfile) showSuccessToast("User profile successfully updated");
+      if (!userProfile) showErrorToast("User profile failed to update");
+
+      if (userProfile) showSuccessToast("User profile successfully updated");
+    }
   };
 
   return (
@@ -131,7 +135,7 @@ const Profile = () => {
             </div>
           )}
           <div className="w-full sm:w-[55%]">
-            <div className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={(e) => (e.key === "Enter" ? handleUserProfile() : "")}>
+            <form className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]" onKeyDown={handleUserProfile}>
               <div className="mx-auto w-fit">
                 <label htmlFor="image" className="relative w-fit cursor-pointer">
                   <Image
@@ -174,10 +178,10 @@ const Profile = () => {
                 <label htmlFor="country">Country</label>
                 <input type="text" id="country" className="rounded-2xl border-2 px-4 py-2 outline-none focus:border-primary-3" value={inputUserProfile.country} onChange={(e) => handleInputChange(e, "country")} />
               </div>
-              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={() => handleUserProfile()}>
+              <button className="rounded-full bg-primary py-3 text-base font-bold text-neutral-5 hover:bg-primary-hover" onClick={handleUserProfile}>
                 Save
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
